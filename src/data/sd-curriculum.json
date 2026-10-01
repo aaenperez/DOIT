@@ -1,0 +1,2268 @@
+[
+  {
+    "day": 1,
+    "week": 1,
+    "phase": "Fundamentals",
+    "title": "How the Web Works: Client-Server, DNS, HTTP",
+    "summary": "Every design starts with a client sending a request to a server. Interviewers expect you to narrate the request path (DNS, TCP/TLS, HTTP) without hand-waving.",
+    "resources": [
+      {
+        "label": "What is DNS?",
+        "source": "Cloudflare Learning Center",
+        "url": "https://www.cloudflare.com/learning/dns/what-is-dns/",
+        "kind": "article",
+        "minutes": 10
+      },
+      {
+        "label": "What happens when you type a URL into your browser?",
+        "source": "ByteByteGo",
+        "url": "https://www.youtube.com/watch?v=AlkDbnbv7dk",
+        "kind": "video",
+        "minutes": 5
+      },
+      {
+        "label": "Overview of HTTP",
+        "source": "MDN Web Docs",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview",
+        "kind": "article",
+        "minutes": 12
+      }
+    ],
+    "questions": [
+      "Walk through every hop from typing a URL to seeing the page.",
+      "What do the recursive resolver, root, TLD, and authoritative nameservers each do?",
+      "Why is HTTP called stateless, and how do apps keep sessions anyway?",
+      "What does TLS add on top of TCP, and what does it cost in latency?"
+    ],
+    "exercise": "Sketch the full request path for loading your own Next.js/Supabase app: browser cache, DNS lookup, TCP + TLS handshake, HTTP request, server, database, response. Mark which steps are cached and roughly how many ms each takes.",
+    "keyTerms": [
+      "DNS resolver",
+      "TTL",
+      "TCP handshake",
+      "TLS",
+      "HTTP methods & status codes",
+      "Stateless"
+    ]
+  },
+  {
+    "day": 2,
+    "week": 1,
+    "phase": "Fundamentals",
+    "title": "Latency vs Throughput, Performance vs Scalability",
+    "summary": "The vocabulary interviewers use to judge trade-offs. You need to state what you are optimizing for (latency, throughput, availability) before choosing components.",
+    "resources": [
+      {
+        "label": "Performance vs scalability, Latency vs throughput, Availability in numbers",
+        "source": "System Design Primer",
+        "url": "https://github.com/donnemartin/system-design-primer#performance-vs-scalability",
+        "kind": "guide",
+        "minutes": 12
+      },
+      {
+        "label": "Throughput vs Latency",
+        "source": "AWS",
+        "url": "https://aws.amazon.com/compare/the-difference-between-throughput-and-latency/",
+        "kind": "article",
+        "minutes": 10
+      },
+      {
+        "label": "Latency Numbers Programmer Should Know",
+        "source": "ByteByteGo",
+        "url": "https://www.youtube.com/watch?v=FqR5vESuKe0",
+        "kind": "video",
+        "minutes": 6
+      }
+    ],
+    "questions": [
+      "Define latency and throughput. Give an example where improving one hurts the other.",
+      "What is the difference between a performance problem and a scalability problem?",
+      "What does 99.9% vs 99.99% availability mean in downtime per year?",
+      "Roughly how long is a memory read vs SSD read vs cross-continent round trip?"
+    ],
+    "exercise": "Your test-stand DAQ samples 8 channels at 10 kHz and streams to a laptop. Write down its latency budget and required throughput (bytes/s), then list two changes that improve throughput but worsen latency (e.g., batching).",
+    "keyTerms": [
+      "Latency",
+      "Throughput",
+      "p99 latency",
+      "Availability (nines)",
+      "Scalability"
+    ]
+  },
+  {
+    "day": 3,
+    "week": 1,
+    "phase": "Fundamentals",
+    "title": "Vertical vs Horizontal Scaling",
+    "summary": "Scaling up a single box hits a ceiling; scaling out needs stateless servers and shared state elsewhere. This is the backbone of almost every interview answer.",
+    "resources": [
+      {
+        "label": "Scale From Zero To Millions Of Users (book chapter)",
+        "source": "ByteByteGo",
+        "url": "https://bytebytego.com/courses/system-design-interview/scale-from-zero-to-millions-of-users",
+        "kind": "guide",
+        "minutes": 25
+      },
+      {
+        "label": "Vertical vs Horizontal Scaling: Key Differences",
+        "source": "ByteByteGo",
+        "url": "https://www.youtube.com/watch?v=dvRFHG2-uYs",
+        "kind": "video",
+        "minutes": 5
+      }
+    ],
+    "questions": [
+      "When is vertical scaling the right call, and what are its limits?",
+      "Why must web servers be stateless to scale horizontally? Where does session state go?",
+      "What new problems appear once you have more than one server?",
+      "In what order would you add components as traffic grows 10x, 100x, 1000x?"
+    ],
+    "exercise": "Draw your web app at 3 stages: 100 users (one box), 100k users, 10M users. For each stage, list exactly what you added (LB, replicas, cache, CDN, stateless tier) and why.",
+    "keyTerms": [
+      "Scale up",
+      "Scale out",
+      "Stateless service",
+      "Session store",
+      "Single point of failure"
+    ]
+  },
+  {
+    "day": 4,
+    "week": 1,
+    "phase": "Fundamentals",
+    "title": "Load Balancers & Reverse Proxies",
+    "summary": "Load balancers spread traffic and hide failed servers. Interviewers want to hear L4 vs L7, the algorithm you'd pick, and how health checks work.",
+    "resources": [
+      {
+        "label": "What is load balancing?",
+        "source": "Cloudflare Learning Center",
+        "url": "https://www.cloudflare.com/learning/performance/what-is-load-balancing/",
+        "kind": "article",
+        "minutes": 8
+      },
+      {
+        "label": "What is a LOAD BALANCER really about?",
+        "source": "ByteByteGo",
+        "url": "https://www.youtube.com/watch?v=LQuuoHTyYz8",
+        "kind": "video",
+        "minutes": 7
+      },
+      {
+        "label": "Load balancer + Reverse proxy sections",
+        "source": "System Design Primer",
+        "url": "https://github.com/donnemartin/system-design-primer#load-balancer",
+        "kind": "guide",
+        "minutes": 12
+      }
+    ],
+    "questions": [
+      "What is the difference between L4 and L7 load balancing?",
+      "Compare round robin, least connections, and IP/consistent hashing. When does each fit?",
+      "How do health checks and failover work? What if the load balancer itself dies?",
+      "How is a reverse proxy different from a load balancer?"
+    ],
+    "exercise": "You have 4 app servers, one of which is 2x as powerful, and WebSocket clients that must stay on one server. Pick an algorithm, explain sticky sessions vs hashing, and draw an active-passive LB pair.",
+    "keyTerms": [
+      "L4 vs L7",
+      "Round robin",
+      "Least connections",
+      "Health check",
+      "Sticky sessions",
+      "Reverse proxy"
+    ]
+  },
+  {
+    "day": 5,
+    "week": 1,
+    "phase": "Fundamentals",
+    "title": "Caching: Strategies, Eviction, Invalidation",
+    "summary": "Caching is the most common answer to 'make reads faster'. You must know where caches live and the consistency cost of each write strategy.",
+    "resources": [
+      {
+        "label": "Caching (core concept)",
+        "source": "Hello Interview",
+        "url": "https://www.hellointerview.com/learn/system-design/core-concepts/caching",
+        "kind": "guide",
+        "minutes": 20
+      },
+      {
+        "label": "Cache Systems Every Developer Should Know",
+        "source": "ByteByteGo",
+        "url": "https://www.youtube.com/watch?v=dGAgxozNWFE",
+        "kind": "video",
+        "minutes": 6
+      },
+      {
+        "label": "When to update the cache (cache-aside, write-through, write-behind)",
+        "source": "System Design Primer",
+        "url": "https://github.com/donnemartin/system-design-primer#when-to-update-the-cache",
+        "kind": "guide",
+        "minutes": 8
+      }
+    ],
+    "questions": [
+      "List the layers where a cache can live, from browser to database.",
+      "Compare cache-aside, write-through, and write-back. Which risks data loss?",
+      "Explain LRU vs LFU eviction and what TTLs are for.",
+      "What are cache stampede and hot keys, and how do you mitigate them?"
+    ],
+    "exercise": "Design caching for a profile page read 1000x more than it's written. Choose a strategy, TTL, and eviction policy; then describe exactly what happens on a profile update so readers never see stale data for more than 5 seconds.",
+    "keyTerms": [
+      "Cache-aside",
+      "Write-through",
+      "Write-back",
+      "LRU",
+      "TTL",
+      "Cache stampede"
+    ]
+  },
+  {
+    "day": 6,
+    "week": 1,
+    "phase": "Fundamentals",
+    "title": "SQL vs NoSQL & Data Modeling",
+    "summary": "Picking a database and sketching a schema is a step in every interview. Interviewers want a justified choice tied to access patterns, not a buzzword.",
+    "resources": [
+      {
+        "label": "Data Modeling (core concept)",
+        "source": "Hello Interview",
+        "url": "https://www.hellointerview.com/learn/system-design/core-concepts/data-modeling",
+        "kind": "guide",
+        "minutes": 20
+      },
+      {
+        "label": "How To Choose The Right Database?",
+        "source": "ByteByteGo",
+        "url": "https://www.youtube.com/watch?v=kkeFE6iRfMM",
+        "kind": "video",
+        "minutes": 7
+      },
+      {
+        "label": "SQL or NoSQL",
+        "source": "System Design Primer",
+        "url": "https://github.com/donnemartin/system-design-primer#sql-or-nosql",
+        "kind": "guide",
+        "minutes": 5
+      }
+    ],
+    "questions": [
+      "What does ACID give you, and which workloads need it?",
+      "Name the four NoSQL families and a use case for each.",
+      "When do you normalize vs denormalize?",
+      "How do access patterns drive the choice of primary key in a key-value or wide-column store?"
+    ],
+    "exercise": "Model a Ticketmaster-lite: users, events, seats, bookings. Write the SQL tables with keys, then rewrite the 'get my bookings' and 'get seats for event' access patterns for a key-value store and note what you lost.",
+    "keyTerms": [
+      "ACID",
+      "Normalization",
+      "Key-value store",
+      "Document store",
+      "Wide-column store",
+      "Access pattern"
+    ]
+  },
+  {
+    "day": 7,
+    "week": 1,
+    "phase": "Review",
+    "title": "Week 1 Review: From One Server to Many",
+    "summary": "Recap the request path, scaling, load balancing, caching, and database choice. Practice combining them into one coherent diagram.",
+    "resources": [
+      {
+        "label": "Core Concepts overview",
+        "source": "Hello Interview",
+        "url": "https://www.hellointerview.com/learn/system-design/in-a-hurry/core-concepts",
+        "kind": "guide",
+        "minutes": 20
+      },
+      {
+        "label": "8 Most Important System Design Concepts You Should Know",
+        "source": "ByteByteGo",
+        "url": "https://www.youtube.com/watch?v=BTjxUS_PylA",
+        "kind": "video",
+        "minutes": 6
+      }
+    ],
+    "questions": [
+      "Explain, start to finish, how a request reaches your database in a horizontally scaled app.",
+      "Which component would you add first for a read-heavy app, and why?",
+      "What is the consistency cost of adding a cache?",
+      "SQL or NoSQL for a user-accounts table? Defend it in 30 seconds."
+    ],
+    "exercise": "Design on paper: a Purdue club event-signup site that gets a 50x spike when registration opens. Draw DNS, CDN, LB, stateless app servers, cache, and DB. Label what's cached, the eviction policy, and what happens when one app server dies mid-spike.",
+    "keyTerms": [
+      "Request path",
+      "Horizontal scaling",
+      "Cache-aside",
+      "Load balancer",
+      "ACID"
+    ]
+  },
+  {
+    "day": 8,
+    "week": 2,
+    "phase": "Fundamentals",
+    "title": "Database Indexing",
+    "summary": "Indexes turn full table scans into fast lookups, at the cost of slower writes. Interviewers expect you to name the index that supports each query.",
+    "resources": [
+      {
+        "label": "Anatomy of an SQL Index",
+        "source": "Use The Index, Luke",
+        "url": "https://use-the-index-luke.com/sql/anatomy",
+        "kind": "article",
+        "minutes": 12
+      },
+      {
+        "label": "DB Indexing in System Design Interviews (B-tree, Geospatial, Inverted Index)",
+        "source": "Hello Interview",
+        "url": "https://www.youtube.com/watch?v=BHCSL_ZifI0",
+        "kind": "video",
+        "minutes": 14
+      },
+      {
+        "label": "SQL tuning: Use good indices",
+        "source": "System Design Primer",
+        "url": "https://github.com/donnemartin/system-design-primer#use-good-indices",
+        "kind": "guide",
+        "minutes": 3
+      }
+    ],
+    "questions": [
+      "How does a B-tree index make lookups O(log n)?",
+      "Why do indexes slow down writes and use more storage?",
+      "What is a composite index, and why does column order matter?",
+      "When would you use a hash, inverted, or geospatial index instead of a B-tree?"
+    ],
+    "exercise": "For a messages table (id, chat_id, sender_id, created_at, body), write the indexes you'd create for: 'latest 50 messages in a chat', 'all messages by a user', and 'search message text'. Justify each and note which one doesn't belong in Postgres.",
+    "keyTerms": [
+      "B-tree",
+      "Composite index",
+      "Covering index",
+      "Inverted index",
+      "Write amplification"
+    ]
+  },
+  {
+    "day": 9,
+    "week": 2,
+    "phase": "Fundamentals",
+    "title": "Replication",
+    "summary": "Replication copies data to multiple machines for availability and read scaling. Interviewers probe leader-follower trade-offs and replication lag.",
+    "resources": [
+      {
+        "label": "RDBMS: master-slave & master-master replication",
+        "source": "System Design Primer",
+        "url": "https://github.com/donnemartin/system-design-primer#relational-database-management-system-rdbms",
+        "kind": "guide",
+        "minutes": 10
+      },
+      {
+        "label": "Database Replication Explained (in 5 Minutes)",
+        "source": "Aced (formerly Exponent)",
+        "url": "https://www.youtube.com/watch?v=bI8Ry6GhMSE",
+        "kind": "video",
+        "minutes": 5
+      },
+      {
+        "label": "Distributed Consensus and Data Replication Strategies",
+        "source": "Gaurav Sen",
+        "url": "https://www.youtube.com/watch?v=GeGxgmPTe4c",
+        "kind": "video",
+        "minutes": 16
+      }
+    ],
+    "questions": [
+      "Compare leader-follower, multi-leader, and leaderless replication.",
+      "What is replication lag, and what user-visible bug can it cause?",
+      "Synchronous vs asynchronous replication: what do you trade?",
+      "What happens during failover, and what is split-brain?"
+    ],
+    "exercise": "Your app uses 1 leader + 2 async read replicas. A user updates their bio and immediately reloads and sees the old bio. Explain why, then give two fixes (e.g., read-your-writes routing) and their costs.",
+    "keyTerms": [
+      "Leader-follower",
+      "Replication lag",
+      "Read replica",
+      "Failover",
+      "Read-your-writes",
+      "Split-brain"
+    ]
+  },
+  {
+    "day": 10,
+    "week": 2,
+    "phase": "Fundamentals",
+    "title": "Sharding & Partitioning",
+    "summary": "When one database can't hold the data or the writes, you split it. Choosing a shard key is a favorite interview deep dive.",
+    "resources": [
+      {
+        "label": "Sharding (core concept)",
+        "source": "Hello Interview",
+        "url": "https://www.hellointerview.com/learn/system-design/core-concepts/sharding",
+        "kind": "guide",
+        "minutes": 20
+      },
+      {
+        "label": "A Crash Course on Database Sharding",
+        "source": "ByteByteGo",
+        "url": "https://bytebytego.com/guides/a-crash-course-in-database-sharding/",
+        "kind": "article",
+        "minutes": 8
+      },
+      {
+        "label": "What is Database Sharding?",
+        "source": "AWS",
+        "url": "https://aws.amazon.com/what-is/database-sharding/",
+        "kind": "article",
+        "minutes": 7
+      }
+    ],
+    "questions": [
+      "Range vs hash vs directory-based sharding: pros and cons of each?",
+      "What makes a good shard key? Give a bad one and explain the hotspot.",
+      "How do you handle queries or joins that span shards?",
+      "Sharding vs replication: what does each solve? Do you need both?"
+    ],
+    "exercise": "Shard a chat app's messages table (1B messages/day). Compare shard keys user_id, chat_id, and message_id for the query 'load a chat's recent messages'. Pick one, then explain what happens when a celebrity group chat becomes a hotspot.",
+    "keyTerms": [
+      "Shard key",
+      "Hash partitioning",
+      "Range partitioning",
+      "Hotspot",
+      "Resharding",
+      "Scatter-gather"
+    ]
+  },
+  {
+    "day": 11,
+    "week": 2,
+    "phase": "Fundamentals",
+    "title": "Consistent Hashing",
+    "summary": "Consistent hashing lets you add or remove nodes while moving only a small fraction of keys. It underpins caches, Dynamo-style stores, and load balancers.",
+    "resources": [
+      {
+        "label": "Consistent Hashing (core concept)",
+        "source": "Hello Interview",
+        "url": "https://www.hellointerview.com/learn/system-design/core-concepts/consistent-hashing",
+        "kind": "guide",
+        "minutes": 15
+      },
+      {
+        "label": "Consistent Hashing | Algorithms You Should Know #1",
+        "source": "ByteByteGo",
+        "url": "https://www.youtube.com/watch?v=UF9Iqmg94tk",
+        "kind": "video",
+        "minutes": 8
+      },
+      {
+        "label": "Design Consistent Hashing (book chapter)",
+        "source": "ByteByteGo",
+        "url": "https://bytebytego.com/courses/system-design-interview/design-consistent-hashing",
+        "kind": "guide",
+        "minutes": 12
+      }
+    ],
+    "questions": [
+      "Why does hash(key) % N break when N changes?",
+      "Walk through placing servers and keys on a hash ring.",
+      "What problem do virtual nodes solve?",
+      "Name two real systems that use consistent hashing."
+    ],
+    "exercise": "Draw a ring with 3 cache nodes and 8 keys. Add a 4th node and mark which keys move. Then add virtual nodes (3 per server) and explain how load evens out.",
+    "keyTerms": [
+      "Hash ring",
+      "Virtual nodes",
+      "Rebalancing",
+      "Modulo hashing",
+      "Key redistribution"
+    ]
+  },
+  {
+    "day": 12,
+    "week": 2,
+    "phase": "Fundamentals",
+    "title": "CAP Theorem & Consistency Models",
+    "summary": "During a network partition you must choose consistency or availability. Interviewers want you to pick per feature (e.g., bookings vs likes) and say why.",
+    "resources": [
+      {
+        "label": "CAP Theorem (core concept)",
+        "source": "Hello Interview",
+        "url": "https://www.hellointerview.com/learn/system-design/core-concepts/cap-theorem",
+        "kind": "guide",
+        "minutes": 15
+      },
+      {
+        "label": "Availability vs consistency + Consistency patterns",
+        "source": "System Design Primer",
+        "url": "https://github.com/donnemartin/system-design-primer#availability-vs-consistency",
+        "kind": "guide",
+        "minutes": 8
+      },
+      {
+        "label": "CAP Theorem Simplified",
+        "source": "ByteByteGo",
+        "url": "https://www.youtube.com/watch?v=BHqjEjzAicA",
+        "kind": "video",
+        "minutes": 6
+      }
+    ],
+    "questions": [
+      "State CAP precisely. Why is 'pick 2 of 3' misleading?",
+      "Strong vs eventual consistency: give a feature that needs each.",
+      "What is read-your-writes or causal consistency, and when is it enough?",
+      "Is a ticket-booking system CP or AP? A social feed?"
+    ],
+    "exercise": "For a drone fleet app, classify each feature as needing strong or eventual consistency: mission assignment, battery telemetry display, geofence updates, flight log archive. Justify each in one sentence and note what the user sees during a partition.",
+    "keyTerms": [
+      "CAP",
+      "Partition tolerance",
+      "Strong consistency",
+      "Eventual consistency",
+      "Linearizability",
+      "Quorum"
+    ]
+  },
+  {
+    "day": 13,
+    "week": 2,
+    "phase": "Fundamentals",
+    "title": "Back-of-the-Envelope Estimation",
+    "summary": "Quick math (QPS, storage, bandwidth) justifies your design choices. Interviewers watch for sane orders of magnitude, not precision.",
+    "resources": [
+      {
+        "label": "Back-of-the-envelope Estimation (book chapter)",
+        "source": "ByteByteGo",
+        "url": "https://bytebytego.com/courses/system-design-interview/back-of-the-envelope-estimation",
+        "kind": "guide",
+        "minutes": 12
+      },
+      {
+        "label": "Back-Of-The-Envelope Estimation / Capacity Planning",
+        "source": "ByteByteGo",
+        "url": "https://www.youtube.com/watch?v=UC5xf8FbdJc",
+        "kind": "video",
+        "minutes": 9
+      },
+      {
+        "label": "Powers of two table + Latency numbers",
+        "source": "System Design Primer",
+        "url": "https://github.com/donnemartin/system-design-primer#powers-of-two-table",
+        "kind": "guide",
+        "minutes": 8
+      }
+    ],
+    "questions": [
+      "How many seconds are in a day (roughly), and how do you turn DAU into QPS?",
+      "How do you estimate peak QPS from average QPS?",
+      "Estimate 5 years of storage for 10M daily 1 KB writes.",
+      "When does an estimate change your design (e.g., 'fits in one machine's memory')?"
+    ],
+    "exercise": "Estimate for a Twitter-like app with 50M DAU, 2 posts/user/day, 100 feed reads/user/day, 1 KB posts and 10% with a 500 KB image: write QPS, read QPS, peak QPS, daily and 5-year storage, and egress bandwidth. Show your rounding.",
+    "keyTerms": [
+      "QPS",
+      "Peak factor",
+      "DAU",
+      "Storage estimate",
+      "Bandwidth",
+      "Powers of two"
+    ]
+  },
+  {
+    "day": 14,
+    "week": 2,
+    "phase": "Review",
+    "title": "Week 2 Review: Data at Scale",
+    "summary": "Recap indexing, replication, sharding, consistent hashing, CAP, and estimation, the toolkit for any data-heavy deep dive.",
+    "resources": [
+      {
+        "label": "7 Must-know Strategies to Scale Your Database",
+        "source": "ByteByteGo",
+        "url": "https://www.youtube.com/watch?v=_1IKwnbscQU",
+        "kind": "video",
+        "minutes": 9
+      },
+      {
+        "label": "CAP Theorem in System Design Interviews",
+        "source": "Hello Interview",
+        "url": "https://www.youtube.com/watch?v=VdrEq0cODu4",
+        "kind": "video",
+        "minutes": 14
+      },
+      {
+        "label": "Availability in numbers (sequence vs parallel)",
+        "source": "System Design Primer",
+        "url": "https://github.com/donnemartin/system-design-primer#availability-in-numbers",
+        "kind": "guide",
+        "minutes": 5
+      }
+    ],
+    "questions": [
+      "When do you add an index vs a read replica vs a shard?",
+      "Explain how consistent hashing and replication work together in a Dynamo-style store.",
+      "What consistency does a user get reading from an async replica?",
+      "Estimate: does 2 TB of data fit on one database node? Should it?"
+    ],
+    "exercise": "Design on paper: your rocket team's test-run database (Postgres) has grown to 2 TB with 5k reads/s and 200 writes/s. Estimate 1-year growth, then propose indexes, read replicas, and a shard key. Explain where consistent hashing would (or wouldn't) help.",
+    "keyTerms": [
+      "Index",
+      "Read replica",
+      "Shard key",
+      "Consistent hashing",
+      "CAP",
+      "Capacity estimate"
+    ]
+  },
+  {
+    "day": 15,
+    "week": 3,
+    "phase": "Fundamentals",
+    "title": "Message Queues & Pub/Sub",
+    "summary": "Queues decouple producers from consumers and absorb bursts. Interviewers expect you to know queue vs pub/sub vs log (Kafka) and delivery guarantees.",
+    "resources": [
+      {
+        "label": "What is a Message Queue?",
+        "source": "AWS",
+        "url": "https://aws.amazon.com/message-queue/",
+        "kind": "article",
+        "minutes": 8
+      },
+      {
+        "label": "What is Pub/Sub Messaging?",
+        "source": "AWS",
+        "url": "https://aws.amazon.com/what-is/pub-sub-messaging/",
+        "kind": "article",
+        "minutes": 8
+      },
+      {
+        "label": "Kafka vs RabbitMQ",
+        "source": "Hello Interview",
+        "url": "https://www.youtube.com/watch?v=1HOVtQ-_fcE",
+        "kind": "video",
+        "minutes": 11
+      }
+    ],
+    "questions": [
+      "What is the difference between a point-to-point queue and pub/sub?",
+      "At-most-once, at-least-once, exactly-once: what does each mean in practice?",
+      "How does a Kafka topic/partition/consumer-group model work?",
+      "Why must consumers often be idempotent?"
+    ],
+    "exercise": "Your test stand produces sensor packets, and three consumers need them: a live dashboard, a disk archiver, and an anomaly detector. Draw it with a queue vs with pub/sub (or a Kafka topic). Which delivery guarantee does each consumer need?",
+    "keyTerms": [
+      "Producer/consumer",
+      "Pub/sub",
+      "Topic & partition",
+      "Consumer group",
+      "At-least-once",
+      "Dead-letter queue"
+    ]
+  },
+  {
+    "day": 16,
+    "week": 3,
+    "phase": "Fundamentals",
+    "title": "Async Processing & Background Jobs",
+    "summary": "Slow work (emails, video encoding, reports) belongs off the request path. Interviewers look for queues, workers, retries, and back pressure.",
+    "resources": [
+      {
+        "label": "Asynchronism: message queues, task queues, back pressure",
+        "source": "System Design Primer",
+        "url": "https://github.com/donnemartin/system-design-primer#asynchronism",
+        "kind": "guide",
+        "minutes": 8
+      },
+      {
+        "label": "Message Queues in System Design Interviews",
+        "source": "Hello Interview",
+        "url": "https://www.youtube.com/watch?v=1ISRd0bS714",
+        "kind": "video",
+        "minutes": 27
+      }
+    ],
+    "questions": [
+      "Which work should be synchronous vs asynchronous in a signup flow?",
+      "How do workers retry safely, and when does a message go to a dead-letter queue?",
+      "What is back pressure, and what happens without it?",
+      "How do you report job status back to the user?"
+    ],
+    "exercise": "Design 'upload a CSV of 1M rows and import it': the API returns immediately with a job ID, workers process chunks, and the client polls for progress. Show the queue, worker pool, retry policy, DLQ, and the status table.",
+    "keyTerms": [
+      "Task queue",
+      "Worker pool",
+      "Retry with backoff",
+      "Back pressure",
+      "Job status",
+      "DLQ"
+    ]
+  },
+  {
+    "day": 17,
+    "week": 3,
+    "phase": "Fundamentals",
+    "title": "API Design: REST, gRPC, WebSockets, Pagination, Idempotency",
+    "summary": "Defining the API is an explicit interview step. You need to pick a protocol, design clean endpoints, paginate, and make retries safe.",
+    "resources": [
+      {
+        "label": "API Design (core concept)",
+        "source": "Hello Interview",
+        "url": "https://www.hellointerview.com/learn/system-design/core-concepts/api-design",
+        "kind": "guide",
+        "minutes": 20
+      },
+      {
+        "label": "Top 6 Most Popular API Architecture Styles",
+        "source": "ByteByteGo",
+        "url": "https://www.youtube.com/watch?v=4vLxWqE94l4",
+        "kind": "video",
+        "minutes": 4
+      },
+      {
+        "label": "Designing robust and predictable APIs with idempotency",
+        "source": "Stripe Engineering",
+        "url": "https://stripe.com/blog/idempotency",
+        "kind": "article",
+        "minutes": 8
+      }
+    ],
+    "questions": [
+      "When would you choose REST vs gRPC vs WebSockets (or SSE)?",
+      "Offset vs cursor pagination: why does cursor pagination scale better?",
+      "Which HTTP methods are idempotent, and how do idempotency keys make POST safe to retry?",
+      "How do you version an API?"
+    ],
+    "exercise": "Write the API for a drone mission-control app: list drones (paginated), assign a mission (idempotent), and stream live telemetry. Give method, path, request/response shape, and protocol for each.",
+    "keyTerms": [
+      "REST",
+      "gRPC",
+      "WebSocket",
+      "Cursor pagination",
+      "Idempotency key",
+      "API versioning"
+    ]
+  },
+  {
+    "day": 18,
+    "week": 3,
+    "phase": "Fundamentals",
+    "title": "Rate Limiting",
+    "summary": "Rate limiters protect services from abuse and overload. Expect questions on algorithms and where the limiter lives in a distributed system.",
+    "resources": [
+      {
+        "label": "What is rate limiting?",
+        "source": "Cloudflare Learning Center",
+        "url": "https://www.cloudflare.com/learning/bots/what-is-rate-limiting/",
+        "kind": "article",
+        "minutes": 6
+      },
+      {
+        "label": "Scaling your API with rate limiters",
+        "source": "Stripe Engineering",
+        "url": "https://stripe.com/blog/rate-limiters",
+        "kind": "article",
+        "minutes": 12
+      },
+      {
+        "label": "Rate Limiter System Design: Token Bucket, Leaky Bucket, Scaling",
+        "source": "ByteByteGo",
+        "url": "https://www.youtube.com/watch?v=YXkOdWBwqaA",
+        "kind": "video",
+        "minutes": 8
+      }
+    ],
+    "questions": [
+      "Compare token bucket, leaky bucket, fixed window, and sliding window.",
+      "Where can a rate limiter live (client, gateway, service), and what are the trade-offs?",
+      "How do you rate limit consistently across many servers?",
+      "What should the API return when a client is limited?"
+    ],
+    "exercise": "Implement token bucket in pseudocode (capacity 10, refill 1/sec) and trace 15 requests arriving in 2 seconds. Then explain how you'd share bucket state across 20 API servers.",
+    "keyTerms": [
+      "Token bucket",
+      "Sliding window",
+      "HTTP 429",
+      "API gateway",
+      "Load shedding"
+    ]
+  },
+  {
+    "day": 19,
+    "week": 3,
+    "phase": "Fundamentals",
+    "title": "Blob Storage & CDNs",
+    "summary": "Images, video, and logs go in object storage, not your database, and get served through a CDN. Presigned URLs are a common interview detail.",
+    "resources": [
+      {
+        "label": "What is Object Storage?",
+        "source": "AWS",
+        "url": "https://aws.amazon.com/what-is/object-storage/",
+        "kind": "article",
+        "minutes": 8
+      },
+      {
+        "label": "Object Storage in System Design Interviews",
+        "source": "Hello Interview",
+        "url": "https://www.youtube.com/watch?v=RvaMHMxHjp4",
+        "kind": "video",
+        "minutes": 13
+      },
+      {
+        "label": "What is a CDN?",
+        "source": "Cloudflare Learning Center",
+        "url": "https://www.cloudflare.com/learning/cdn/what-is-a-cdn/",
+        "kind": "article",
+        "minutes": 8
+      }
+    ],
+    "questions": [
+      "Why not store large files in a relational database?",
+      "How do presigned URLs let clients upload directly to blob storage?",
+      "Push vs pull CDN: how does each get content to the edge?",
+      "How do you upload a 5 GB file reliably (multipart, resumable)?"
+    ],
+    "exercise": "Design profile-photo upload: client asks the API for a presigned URL, uploads to object storage, a thumbnail job runs, and the photo is served via CDN. Draw it and list what metadata lives in the database.",
+    "keyTerms": [
+      "Object storage",
+      "Presigned URL",
+      "Multipart upload",
+      "CDN edge",
+      "Cache invalidation"
+    ]
+  },
+  {
+    "day": 20,
+    "week": 3,
+    "phase": "Fundamentals",
+    "title": "Monitoring & Observability",
+    "summary": "You can't run what you can't see. Interviewers like candidates who mention metrics, logs, traces, and alerting on the golden signals.",
+    "resources": [
+      {
+        "label": "Monitoring Distributed Systems (SRE Book ch. 6)",
+        "source": "Google SRE",
+        "url": "https://sre.google/sre-book/monitoring-distributed-systems/",
+        "kind": "article",
+        "minutes": 25
+      },
+      {
+        "label": "Observability primer",
+        "source": "OpenTelemetry",
+        "url": "https://opentelemetry.io/docs/concepts/observability-primer/",
+        "kind": "article",
+        "minutes": 10
+      }
+    ],
+    "questions": [
+      "What are the four golden signals?",
+      "Metrics vs logs vs traces: what question does each answer?",
+      "What makes a good alert vs a noisy one?",
+      "What are SLIs, SLOs, and SLAs?"
+    ],
+    "exercise": "For a telemetry ingestion service, define 2 SLIs and SLOs, 4 dashboard metrics, and 2 pages-worthy alerts. Then describe how a trace would show you a slow database call.",
+    "keyTerms": [
+      "Golden signals",
+      "SLI / SLO",
+      "Metrics",
+      "Distributed tracing",
+      "Alerting"
+    ]
+  },
+  {
+    "day": 21,
+    "week": 3,
+    "phase": "Review",
+    "title": "Week 3 Review: Async Systems & APIs",
+    "summary": "Recap queues, async jobs, API design, rate limiting, blob storage, and observability, the building blocks that show up in every design problem.",
+    "resources": [
+      {
+        "label": "Networking Essentials (read the WebSockets/SSE sections)",
+        "source": "Hello Interview",
+        "url": "https://www.hellointerview.com/learn/system-design/core-concepts/networking-essentials",
+        "kind": "guide",
+        "minutes": 15
+      },
+      {
+        "label": "Key Technologies overview",
+        "source": "Hello Interview",
+        "url": "https://www.hellointerview.com/learn/system-design/in-a-hurry/key-technologies",
+        "kind": "guide",
+        "minutes": 12
+      },
+      {
+        "label": "Top 7 Most-Used Distributed System Patterns",
+        "source": "ByteByteGo",
+        "url": "https://www.youtube.com/watch?v=nH4qjmP2KEE",
+        "kind": "video",
+        "minutes": 6
+      }
+    ],
+    "questions": [
+      "When do you reach for a queue vs a synchronous call?",
+      "How do idempotency keys and at-least-once delivery fit together?",
+      "Where would you put a rate limiter in a public API?",
+      "What 3 metrics would you alert on for any web service?"
+    ],
+    "exercise": "Design on paper: an image-upload + thumbnail service. Include the upload API (presigned URLs), a queue for thumbnail jobs with retries/DLQ, blob storage + CDN, a per-user rate limit, and three alerts.",
+    "keyTerms": [
+      "Presigned URL",
+      "Task queue",
+      "Idempotency",
+      "Rate limit",
+      "Golden signals"
+    ]
+  },
+  {
+    "day": 22,
+    "week": 4,
+    "phase": "Design Problems",
+    "title": "The System Design Interview Framework",
+    "summary": "A repeatable 45-minute structure: requirements, estimation, core entities, API, high-level design, deep dives. Using it is half of what interviewers grade.",
+    "resources": [
+      {
+        "label": "System Design Delivery Framework",
+        "source": "Hello Interview",
+        "url": "https://www.hellointerview.com/learn/system-design/in-a-hurry/delivery",
+        "kind": "guide",
+        "minutes": 15
+      },
+      {
+        "label": "System Design Interview: A Step-By-Step Guide",
+        "source": "ByteByteGo",
+        "url": "https://www.youtube.com/watch?v=i7twT3x5yv8",
+        "kind": "video",
+        "minutes": 10
+      },
+      {
+        "label": "A Framework For System Design Interviews (book chapter)",
+        "source": "ByteByteGo",
+        "url": "https://bytebytego.com/courses/system-design-interview/a-framework-for-system-design-interviews",
+        "kind": "guide",
+        "minutes": 12
+      }
+    ],
+    "questions": [
+      "What are the steps of the framework, and roughly how many minutes go to each?",
+      "Functional vs non-functional requirements: give two of each for a chat app.",
+      "When should you skip or shorten estimation?",
+      "How do you choose what to deep-dive on?"
+    ],
+    "exercise": "Take 'Design Spotify playlists' and do only the first 10 minutes of the framework: 3 functional requirements, 3 non-functional, core entities, and the API. Time yourself.",
+    "keyTerms": [
+      "Functional requirements",
+      "Non-functional requirements",
+      "Core entities",
+      "High-level design",
+      "Deep dive"
+    ]
+  },
+  {
+    "day": 23,
+    "week": 4,
+    "phase": "Design Problems",
+    "title": "Design a URL Shortener (Bitly)",
+    "summary": "The classic warm-up: short-code generation, a read-heavy redirect path, and caching. Tests the basics of the framework end to end.",
+    "resources": [
+      {
+        "label": "Design a URL Shortener Like Bitly",
+        "source": "Hello Interview",
+        "url": "https://www.hellointerview.com/learn/system-design/problem-breakdowns/bitly",
+        "kind": "guide",
+        "minutes": 25
+      },
+      {
+        "label": "How Does a URL Shortener Work?",
+        "source": "ByteByteGo",
+        "url": "https://www.youtube.com/watch?v=HHUi8F_qAXM",
+        "kind": "video",
+        "minutes": 7
+      }
+    ],
+    "questions": [
+      "How do you generate unique short codes (hash vs counter + base62)? What about collisions?",
+      "301 vs 302 redirect: which and why?",
+      "What is the read:write ratio, and how does it shape the design?",
+      "How do you support custom aliases and expiration?"
+    ],
+    "exercise": "Design Bitly: write requirements, estimate QPS/storage for 100M new URLs/month, define the API and data model, draw the high-level design, then deep-dive on short-code generation at scale.",
+    "keyTerms": [
+      "Base62",
+      "Counter / ticket server",
+      "Hash collision",
+      "301 vs 302",
+      "Read-heavy"
+    ]
+  },
+  {
+    "day": 24,
+    "week": 4,
+    "phase": "Design Problems",
+    "title": "Design Pastebin",
+    "summary": "Like Bitly but with large text blobs, which forces you to separate metadata (DB) from content (object storage).",
+    "resources": [
+      {
+        "label": "Design Pastebin.com (solution walkthrough)",
+        "source": "System Design Primer",
+        "url": "https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/pastebin/README.md",
+        "kind": "guide",
+        "minutes": 20
+      },
+      {
+        "label": "Design PasteBin | Systems Design Questions 3.0",
+        "source": "Jordan has no life",
+        "url": "https://www.youtube.com/watch?v=V_yOcipUqUE",
+        "kind": "video",
+        "minutes": 15
+      }
+    ],
+    "questions": [
+      "Where do paste contents live vs paste metadata, and why?",
+      "How do you expire pastes efficiently?",
+      "How would you track view analytics without slowing reads?",
+      "How does a CDN help for popular pastes?"
+    ],
+    "exercise": "Design Pastebin: requirements (create, read, expire), estimate storage for 10M pastes/day at 10 KB, API, data model, high-level design, then deep-dive on expiration cleanup and caching hot pastes.",
+    "keyTerms": [
+      "Object storage",
+      "Metadata DB",
+      "TTL / expiration",
+      "CDN",
+      "Analytics pipeline"
+    ]
+  },
+  {
+    "day": 25,
+    "week": 4,
+    "phase": "Design Problems",
+    "title": "Design a Distributed Rate Limiter",
+    "summary": "Turns day 18's algorithms into a full design: shared counters, low latency, and failure behavior across many servers.",
+    "resources": [
+      {
+        "label": "Design a Distributed Rate Limiter",
+        "source": "Hello Interview",
+        "url": "https://www.hellointerview.com/learn/system-design/problem-breakdowns/distributed-rate-limiter",
+        "kind": "guide",
+        "minutes": 25
+      },
+      {
+        "label": "Design A Rate Limiter (book chapter, skim Step 3)",
+        "source": "ByteByteGo",
+        "url": "https://bytebytego.com/courses/system-design-interview/design-a-rate-limiter",
+        "kind": "guide",
+        "minutes": 10
+      }
+    ],
+    "questions": [
+      "Where does the rate limiter sit in the request path?",
+      "How do you make counter updates atomic in Redis?",
+      "Should the limiter fail open or fail closed if Redis is down?",
+      "How do you configure different limits per user tier or endpoint?"
+    ],
+    "exercise": "Design a rate limiter for an API gateway serving 1M req/s: requirements, estimate Redis memory for 10M users, choose an algorithm, draw the design, then deep-dive on race conditions and multi-region limits.",
+    "keyTerms": [
+      "Token bucket",
+      "Redis INCR / Lua",
+      "Fail open",
+      "API gateway",
+      "Race condition"
+    ]
+  },
+  {
+    "day": 26,
+    "week": 4,
+    "phase": "Design Problems",
+    "title": "Design a Distributed Unique ID Generator",
+    "summary": "Many designs need globally unique, roughly sortable IDs without a single bottleneck. Snowflake-style IDs are the standard answer.",
+    "resources": [
+      {
+        "label": "Snowflake ID",
+        "source": "Wikipedia",
+        "url": "https://en.wikipedia.org/wiki/Snowflake_ID",
+        "kind": "article",
+        "minutes": 5
+      },
+      {
+        "label": "twitter-archive/snowflake README",
+        "source": "GitHub (Twitter)",
+        "url": "https://github.com/twitter-archive/snowflake",
+        "kind": "article",
+        "minutes": 4
+      },
+      {
+        "label": "Distributed Systems 3.1: Physical time",
+        "source": "Martin Kleppmann",
+        "url": "https://www.youtube.com/watch?v=FQ_2N3AQu0M",
+        "kind": "video",
+        "minutes": 21
+      }
+    ],
+    "questions": [
+      "Why not use auto-increment or UUIDv4 everywhere?",
+      "Break down the bits of a Snowflake ID.",
+      "What happens if a machine's clock moves backward?",
+      "How are worker IDs assigned without collisions?"
+    ],
+    "exercise": "Design an ID service producing 100k IDs/s across 3 data centers: requirements, bit layout, API, worker-ID assignment, then deep-dive on clock skew and what your code does when NTP jumps the clock back.",
+    "keyTerms": [
+      "Snowflake ID",
+      "Epoch",
+      "Worker ID",
+      "Clock skew",
+      "Monotonic",
+      "UUID"
+    ]
+  },
+  {
+    "day": 27,
+    "week": 4,
+    "phase": "Design Problems",
+    "title": "Design a Key-Value Store",
+    "summary": "Combines partitioning, replication, consistency, and failure detection into one system (think DynamoDB/Cassandra).",
+    "resources": [
+      {
+        "label": "Design A Key-value Store (book chapter)",
+        "source": "ByteByteGo",
+        "url": "https://bytebytego.com/courses/system-design-interview/design-a-key-value-store",
+        "kind": "guide",
+        "minutes": 25
+      },
+      {
+        "label": "How Key-value Stores Work (Redis, DynamoDB, Memcached)",
+        "source": "ByteByteGo",
+        "url": "https://www.youtube.com/watch?v=Dwt8R0KPu7k",
+        "kind": "video",
+        "minutes": 6
+      }
+    ],
+    "questions": [
+      "How do consistent hashing and replication combine to place data?",
+      "Explain quorum reads/writes (N, R, W). What does R + W > N guarantee?",
+      "How are conflicts resolved (vector clocks, last-write-wins)?",
+      "How do nodes detect failures (gossip, hinted handoff)?"
+    ],
+    "exercise": "Design a key-value store with get/put: requirements (high availability, tunable consistency), estimate for 10 TB, API, partitioning + replication scheme, then deep-dive on N/R/W choices and handling a node that is down for 1 hour.",
+    "keyTerms": [
+      "Quorum (N/R/W)",
+      "Vector clock",
+      "Gossip protocol",
+      "Hinted handoff",
+      "Merkle tree",
+      "Last-write-wins"
+    ]
+  },
+  {
+    "day": 28,
+    "week": 4,
+    "phase": "Review",
+    "title": "Week 4 Review: Framework & First Designs",
+    "summary": "Recap the framework and the first five problems: URL shortener, Pastebin, rate limiter, ID generator, key-value store.",
+    "resources": [
+      {
+        "label": "How to Prepare for System Design Interviews",
+        "source": "Hello Interview",
+        "url": "https://www.youtube.com/watch?v=Ru54dxzCyD0",
+        "kind": "video",
+        "minutes": 18
+      },
+      {
+        "label": "Consistent Hashing: Easy Explanation for System Design Interviews",
+        "source": "Hello Interview",
+        "url": "https://www.youtube.com/watch?v=vccwdhfqIrI",
+        "kind": "video",
+        "minutes": 7
+      },
+      {
+        "label": "How to approach a system design interview question",
+        "source": "System Design Primer",
+        "url": "https://github.com/donnemartin/system-design-primer#how-to-approach-a-system-design-interview-question",
+        "kind": "guide",
+        "minutes": 5
+      }
+    ],
+    "questions": [
+      "Recite the framework steps and time budget from memory.",
+      "How does Pastebin's design differ from Bitly's, and why?",
+      "Where did consistent hashing show up this week?",
+      "What's your default answer for 'make it highly available'?"
+    ],
+    "exercise": "Design on paper in 20 minutes using the full framework: a 'link-in-bio' page service (users create a page of links; visitors view it; owners see click counts). Time each step and note where you ran over.",
+    "keyTerms": [
+      "Framework",
+      "Read-heavy design",
+      "Unique IDs",
+      "Quorum",
+      "Rate limiting"
+    ]
+  },
+  {
+    "day": 29,
+    "week": 5,
+    "phase": "Design Problems",
+    "title": "Design a News Feed",
+    "summary": "The fan-out problem: precompute feeds on write or assemble them on read? A core interview question about read/write trade-offs.",
+    "resources": [
+      {
+        "label": "Design Facebook's News Feed",
+        "source": "Hello Interview",
+        "url": "https://www.hellointerview.com/learn/system-design/problem-breakdowns/fb-news-feed",
+        "kind": "guide",
+        "minutes": 25
+      },
+      {
+        "label": "Design A News Feed System (book chapter)",
+        "source": "ByteByteGo",
+        "url": "https://bytebytego.com/courses/system-design-interview/design-a-news-feed-system",
+        "kind": "guide",
+        "minutes": 12
+      }
+    ],
+    "questions": [
+      "Fan-out on write vs fan-out on read: trade-offs?",
+      "How do you handle celebrities with 10M followers?",
+      "How do you paginate a feed that keeps changing?",
+      "What goes in the feed cache, and how big is it?"
+    ],
+    "exercise": "Design a news feed for 500M DAU: requirements, estimate feed reads/s and fan-out writes/s, API, data model (posts, follows, feed cache), high-level design, then deep-dive on the hybrid fan-out strategy for celebrities.",
+    "keyTerms": [
+      "Fan-out on write",
+      "Fan-out on read",
+      "Hybrid fan-out",
+      "Feed cache",
+      "Cursor pagination"
+    ]
+  },
+  {
+    "day": 30,
+    "week": 5,
+    "phase": "Design Problems",
+    "title": "Design a Chat App (WhatsApp)",
+    "summary": "Real-time messaging over persistent connections, with delivery guarantees, ordering, and offline users.",
+    "resources": [
+      {
+        "label": "Design a Messaging App Like WhatsApp",
+        "source": "Hello Interview",
+        "url": "https://www.hellointerview.com/learn/system-design/problem-breakdowns/whatsapp",
+        "kind": "guide",
+        "minutes": 25
+      },
+      {
+        "label": "Design A Chat System (WhatsApp, Messenger, Discord, Slack)",
+        "source": "ByteByteGo",
+        "url": "https://www.youtube.com/watch?v=okrR1KXNLtA",
+        "kind": "video",
+        "minutes": 9
+      }
+    ],
+    "questions": [
+      "Why WebSockets instead of HTTP polling for chat?",
+      "How do you route a message to a user connected to a different server?",
+      "How do you deliver messages to offline users and sync multiple devices?",
+      "How do you guarantee per-chat message ordering?"
+    ],
+    "exercise": "Design WhatsApp 1:1 and group chat: requirements, estimate concurrent connections and messages/s for 100M DAU, API/events, data model, high-level design, then deep-dive on routing between chat servers (pub/sub) and offline delivery.",
+    "keyTerms": [
+      "WebSocket",
+      "Connection registry",
+      "Message inbox",
+      "Delivery receipts",
+      "Presence"
+    ]
+  },
+  {
+    "day": 31,
+    "week": 5,
+    "phase": "Design Problems",
+    "title": "Design a Notification System",
+    "summary": "One service that fans out push, SMS, and email reliably, with user preferences, retries, and rate limits per channel.",
+    "resources": [
+      {
+        "label": "Uber's Real-Time Push Platform",
+        "source": "Uber Engineering",
+        "url": "https://www.uber.com/blog/real-time-push-platform/",
+        "kind": "article",
+        "minutes": 15
+      },
+      {
+        "label": "Notification Service | Systems Design Interview Questions",
+        "source": "Jordan has no life",
+        "url": "https://www.youtube.com/watch?v=J-5JozlYIqI",
+        "kind": "video",
+        "minutes": 21
+      }
+    ],
+    "questions": [
+      "How do you decouple producers from push/SMS/email senders?",
+      "How do you avoid sending duplicate notifications on retries?",
+      "Where do user preferences and opt-outs get checked?",
+      "How do you handle a third-party provider (APNs/Twilio) outage?"
+    ],
+    "exercise": "Design a notification service for 10M users: requirements, estimate notifications/s at peak, API, data model (templates, preferences, delivery log), high-level design with per-channel queues, then deep-dive on dedup and retries.",
+    "keyTerms": [
+      "Fan-out",
+      "Per-channel queue",
+      "Deduplication",
+      "Retry / DLQ",
+      "User preferences",
+      "APNs / FCM"
+    ]
+  },
+  {
+    "day": 32,
+    "week": 5,
+    "phase": "Design Problems",
+    "title": "Design a Web Crawler",
+    "summary": "A distributed pipeline problem: URL frontier, politeness, dedup, and fault tolerance at billions of pages.",
+    "resources": [
+      {
+        "label": "Design a Web Crawler",
+        "source": "Hello Interview",
+        "url": "https://www.hellointerview.com/learn/system-design/problem-breakdowns/web-crawler",
+        "kind": "guide",
+        "minutes": 25
+      },
+      {
+        "label": "Design A Web Crawler (book chapter, skim)",
+        "source": "ByteByteGo",
+        "url": "https://bytebytego.com/courses/system-design-interview/design-a-web-crawler",
+        "kind": "guide",
+        "minutes": 10
+      }
+    ],
+    "questions": [
+      "What is the URL frontier, and how do you enforce politeness per domain?",
+      "How do you detect duplicate URLs and duplicate content?",
+      "How do you recover if a crawler worker dies mid-crawl?",
+      "How would you estimate time to crawl 1B pages?"
+    ],
+    "exercise": "Design a crawler for 1B pages in 5 days: requirements, estimate pages/s and storage, components (frontier, fetchers, parser, dedup, storage), high-level design, then deep-dive on politeness and DNS caching.",
+    "keyTerms": [
+      "URL frontier",
+      "Politeness",
+      "robots.txt",
+      "Bloom filter",
+      "Content hash",
+      "Checkpointing"
+    ]
+  },
+  {
+    "day": 33,
+    "week": 5,
+    "phase": "Design Problems",
+    "title": "Design Search Autocomplete",
+    "summary": "Return the top suggestions for a prefix in under 100 ms. Tests data structures (tries) plus an offline aggregation pipeline.",
+    "resources": [
+      {
+        "label": "Design Autocomplete or Typeahead Suggestions for Google Search",
+        "source": "Tushar Roy",
+        "url": "https://www.youtube.com/watch?v=us0qySiUsGU",
+        "kind": "video",
+        "minutes": 20
+      },
+      {
+        "label": "Trie",
+        "source": "Wikipedia",
+        "url": "https://en.wikipedia.org/wiki/Trie",
+        "kind": "article",
+        "minutes": 8
+      }
+    ],
+    "questions": [
+      "How does a trie with cached top-k at each node answer a prefix query fast?",
+      "How are query frequencies collected and the trie rebuilt?",
+      "How do you shard the trie?",
+      "Where do client-side debouncing and caching help?"
+    ],
+    "exercise": "Design autocomplete for 10M DAU: requirements (top 5, <100 ms), estimate queries/s, API, data structures, high-level design (query service + offline aggregation), then deep-dive on updating suggestions without downtime.",
+    "keyTerms": [
+      "Trie",
+      "Top-k per node",
+      "Prefix sharding",
+      "Debounce",
+      "Batch aggregation"
+    ]
+  },
+  {
+    "day": 34,
+    "week": 5,
+    "phase": "Design Problems",
+    "title": "Design Ticketmaster",
+    "summary": "High-contention booking: thousands of users fighting for the same seats. Tests transactions, locking, and surge handling.",
+    "resources": [
+      {
+        "label": "Design a Ticket Booking Site Like Ticketmaster",
+        "source": "Hello Interview",
+        "url": "https://www.hellointerview.com/learn/system-design/problem-breakdowns/ticketmaster",
+        "kind": "guide",
+        "minutes": 25
+      },
+      {
+        "label": "ACID Properties in Databases With Examples",
+        "source": "ByteByteGo",
+        "url": "https://www.youtube.com/watch?v=GAe5oB742dw",
+        "kind": "video",
+        "minutes": 5
+      }
+    ],
+    "questions": [
+      "How do you prevent two users from booking the same seat?",
+      "Pessimistic locking vs optimistic concurrency vs a reservation TTL?",
+      "How do you handle 1M users hitting a popular on-sale at once (virtual queue)?",
+      "Which parts need strong consistency, and which can be eventually consistent?"
+    ],
+    "exercise": "Design Ticketmaster: requirements (view events, reserve, pay), estimate peak QPS for a huge on-sale, API, data model, high-level design, then deep-dive on seat reservation with a 10-minute hold and the waiting-room queue.",
+    "keyTerms": [
+      "Distributed lock",
+      "Optimistic concurrency",
+      "Reservation TTL",
+      "Virtual waiting room",
+      "Strong consistency"
+    ]
+  },
+  {
+    "day": 35,
+    "week": 5,
+    "phase": "Review",
+    "title": "Week 5 Review: Real-Time & Contention",
+    "summary": "Recap news feed, chat, notifications, crawler, autocomplete, and Ticketmaster. Look for the repeated patterns across them.",
+    "resources": [
+      {
+        "label": "System Design Patterns overview",
+        "source": "Hello Interview",
+        "url": "https://www.hellointerview.com/learn/system-design/in-a-hurry/patterns",
+        "kind": "guide",
+        "minutes": 15
+      },
+      {
+        "label": "How Discord Stores Trillions of Messages",
+        "source": "Discord Engineering",
+        "url": "https://discord.com/blog/how-discord-stores-trillions-of-messages",
+        "kind": "article",
+        "minutes": 12
+      }
+    ],
+    "questions": [
+      "Which designs this week used fan-out, and how did they differ?",
+      "Where did you need strong consistency, and how did you get it?",
+      "How do WebSocket servers find each other's users?",
+      "What did Discord change in its storage layer, and why?"
+    ],
+    "exercise": "Design on paper: @mention notifications in a group chat. A user mentioned in a 50k-member channel should get a push within 5 s. Reuse chat routing, notification fan-out, and dedup; draw it and identify the bottleneck.",
+    "keyTerms": [
+      "Fan-out",
+      "WebSocket routing",
+      "Locking",
+      "Dedup",
+      "Hot partition"
+    ]
+  },
+  {
+    "day": 36,
+    "week": 6,
+    "phase": "Design Problems",
+    "title": "Design Uber / Ride-Sharing",
+    "summary": "Match riders to nearby drivers in real time. Tests geospatial indexing, high-frequency location updates, and consistency in matching.",
+    "resources": [
+      {
+        "label": "Design a Ride-Sharing Service Like Uber",
+        "source": "Hello Interview",
+        "url": "https://www.hellointerview.com/learn/system-design/problem-breakdowns/uber",
+        "kind": "guide",
+        "minutes": 25
+      },
+      {
+        "label": "H3: Uber's Hexagonal Hierarchical Spatial Index",
+        "source": "Uber Engineering",
+        "url": "https://www.uber.com/blog/h3/",
+        "kind": "article",
+        "minutes": 10
+      }
+    ],
+    "questions": [
+      "How do you store and query 'drivers within 2 km' efficiently?",
+      "How do you handle millions of location updates per second?",
+      "How do you ensure a driver isn't matched to two riders at once?",
+      "Geohash vs quadtree vs H3: trade-offs?"
+    ],
+    "exercise": "Design Uber: requirements (request ride, match, track), estimate location-update QPS for 1M active drivers, API, data model, high-level design, then deep-dive on the geospatial index and the matching lock.",
+    "keyTerms": [
+      "Geohash",
+      "Quadtree",
+      "H3",
+      "Location updates",
+      "Matching lock"
+    ]
+  },
+  {
+    "day": 37,
+    "week": 6,
+    "phase": "Design Problems",
+    "title": "Design Dropbox / File Sync",
+    "summary": "Upload, store, and sync large files across devices. Tests blob storage, chunking, and change notifications.",
+    "resources": [
+      {
+        "label": "Design a File Storage Service Like Dropbox",
+        "source": "Hello Interview",
+        "url": "https://www.hellointerview.com/learn/system-design/problem-breakdowns/dropbox",
+        "kind": "guide",
+        "minutes": 25
+      },
+      {
+        "label": "Streaming File Synchronization",
+        "source": "Dropbox Tech Blog",
+        "url": "https://dropbox.tech/infrastructure/streaming-file-synchronization",
+        "kind": "article",
+        "minutes": 10
+      }
+    ],
+    "questions": [
+      "Why chunk files, and how does chunking enable resumable uploads and dedup?",
+      "How does a client learn another device changed a file?",
+      "Where do file metadata and file bytes live?",
+      "How do you handle conflicting edits from two offline devices?"
+    ],
+    "exercise": "Design Dropbox: requirements (upload, download, sync, share), estimate storage for 50M users, API, data model (files, chunks, versions), high-level design, then deep-dive on chunked uploads with presigned URLs and sync notifications.",
+    "keyTerms": [
+      "Chunking",
+      "Content hash",
+      "Presigned URL",
+      "Metadata service",
+      "Sync / long polling",
+      "Conflict copy"
+    ]
+  },
+  {
+    "day": 38,
+    "week": 6,
+    "phase": "Design Problems",
+    "title": "Design YouTube / Video Streaming",
+    "summary": "Upload, transcode, and stream video globally. Tests async pipelines, blob storage, CDNs, and adaptive bitrate streaming.",
+    "resources": [
+      {
+        "label": "Design a Video Streaming Platform Like YouTube",
+        "source": "Hello Interview",
+        "url": "https://www.hellointerview.com/learn/system-design/problem-breakdowns/youtube",
+        "kind": "guide",
+        "minutes": 25
+      },
+      {
+        "label": "System Design: Design YouTube",
+        "source": "ByteByteGo",
+        "url": "https://www.youtube.com/watch?v=jWRW2xGMqSw",
+        "kind": "video",
+        "minutes": 7
+      }
+    ],
+    "questions": [
+      "What happens between upload and 'video is watchable'?",
+      "What is adaptive bitrate streaming (HLS/DASH), and why segment videos?",
+      "How do CDNs reduce origin load, and what about long-tail videos?",
+      "How do you support resumable uploads of a 10 GB file?"
+    ],
+    "exercise": "Design YouTube: requirements (upload, watch), estimate daily upload storage and egress bandwidth, API, data model, high-level design, then deep-dive on the transcoding pipeline (DAG of jobs) and CDN strategy.",
+    "keyTerms": [
+      "Transcoding",
+      "HLS / DASH",
+      "Adaptive bitrate",
+      "CDN",
+      "Multipart upload"
+    ]
+  },
+  {
+    "day": 39,
+    "week": 6,
+    "phase": "Design Problems",
+    "title": "Design a Distributed Job Scheduler",
+    "summary": "Run millions of scheduled or delayed jobs reliably (cron at scale). Tests at-least-once execution, leasing, and idempotency.",
+    "resources": [
+      {
+        "label": "Executing Cron Scripts Reliably at Scale",
+        "source": "Slack Engineering",
+        "url": "https://slack.engineering/executing-cron-scripts-reliably-at-scale/",
+        "kind": "article",
+        "minutes": 12
+      },
+      {
+        "label": "How we designed Dropbox ATF: an async task framework",
+        "source": "Dropbox Tech Blog",
+        "url": "https://dropbox.tech/infrastructure/asynchronous-task-scheduling-at-dropbox",
+        "kind": "article",
+        "minutes": 15
+      }
+    ],
+    "questions": [
+      "How do you find jobs that are due without scanning the whole table?",
+      "How do you make sure a job runs once even if a worker crashes mid-run?",
+      "What is a lease/visibility timeout?",
+      "How do you scale the scheduler itself without double-scheduling?"
+    ],
+    "exercise": "Design a job scheduler supporting one-off and cron jobs (10k jobs/s due at peak): requirements, API, data model (jobs, executions), high-level design (scheduler, queue, workers), then deep-dive on exactly-once-ish execution with leases + idempotency.",
+    "keyTerms": [
+      "Cron",
+      "Lease / visibility timeout",
+      "At-least-once",
+      "Idempotency",
+      "Leader election",
+      "Time-bucketed index"
+    ]
+  },
+  {
+    "day": 40,
+    "week": 6,
+    "phase": "Design Problems",
+    "title": "Design Live Comments",
+    "summary": "Push new comments to millions of viewers of a live video in real time. A deep dive on SSE/WebSockets and pub/sub fan-out.",
+    "resources": [
+      {
+        "label": "Design Facebook's Live Comments System",
+        "source": "Hello Interview",
+        "url": "https://www.hellointerview.com/learn/system-design/problem-breakdowns/fb-live-comments",
+        "kind": "guide",
+        "minutes": 25
+      },
+      {
+        "label": "Using server-sent events",
+        "source": "MDN Web Docs",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events",
+        "kind": "article",
+        "minutes": 8
+      }
+    ],
+    "questions": [
+      "Polling vs long polling vs SSE vs WebSockets for this feature?",
+      "How do comments reach viewers connected to hundreds of different servers?",
+      "How do you load older comments when a viewer joins late?",
+      "How would you partition pub/sub channels for a video with 5M viewers?"
+    ],
+    "exercise": "Design live comments: requirements, estimate comments/s and fan-out messages/s, API, data model, high-level design, then deep-dive on routing comments to the right SSE servers via pub/sub.",
+    "keyTerms": [
+      "SSE",
+      "Pub/sub fan-out",
+      "Connection server",
+      "Channel partitioning",
+      "Backfill"
+    ]
+  },
+  {
+    "day": 41,
+    "week": 6,
+    "phase": "Design Problems",
+    "title": "Design Real-Time Drone Fleet Telemetry Ingestion + Dashboard",
+    "summary": "Defense-flavored: ingest high-rate telemetry from thousands of drones over flaky links, store it, and show a live operator dashboard. Mirrors real Anduril/Shield AI work.",
+    "resources": [
+      {
+        "label": "Time Series Databases",
+        "source": "Hello Interview",
+        "url": "https://www.hellointerview.com/learn/system-design/deep-dives/time-series-databases",
+        "kind": "guide",
+        "minutes": 20
+      },
+      {
+        "label": "MQTT Quality of Service (QoS) 0, 1, & 2",
+        "source": "HiveMQ",
+        "url": "https://www.hivemq.com/blog/mqtt-essentials-part-6-mqtt-quality-of-service-levels/",
+        "kind": "article",
+        "minutes": 8
+      },
+      {
+        "label": "Apache Kafka Fundamentals You Should Know",
+        "source": "ByteByteGo",
+        "url": "https://www.youtube.com/watch?v=-RDyEFvnTXI",
+        "kind": "video",
+        "minutes": 5
+      }
+    ],
+    "questions": [
+      "Which protocol would drones use to send telemetry, and what QoS level?",
+      "How do you buffer on the drone and backfill after a link drop?",
+      "How do you store 10 Hz x 50 fields x 5,000 drones, and downsample for history?",
+      "How does the dashboard get live updates without hammering the database?"
+    ],
+    "exercise": "Design fleet telemetry for 5,000 drones at 10 Hz: requirements (live map, alerts, 1-year history), estimate msgs/s and storage/day, protocol + API, data model, high-level design (gateway, Kafka, stream processor, TSDB, WebSocket push), then deep-dive on handling a drone that reconnects with 10 minutes of buffered data.",
+    "keyTerms": [
+      "MQTT",
+      "QoS levels",
+      "Time-series DB",
+      "Downsampling",
+      "Backfill",
+      "Edge buffering"
+    ]
+  },
+  {
+    "day": 42,
+    "week": 6,
+    "phase": "Review",
+    "title": "Week 6 Review: Media, Geo & Streams",
+    "summary": "Recap Uber, Dropbox, YouTube, job scheduler, live comments, and drone telemetry. Redis showed up repeatedly, so review it as a key technology.",
+    "resources": [
+      {
+        "label": "Redis Deep Dive",
+        "source": "Hello Interview",
+        "url": "https://www.hellointerview.com/learn/system-design/deep-dives/redis",
+        "kind": "guide",
+        "minutes": 25
+      },
+      {
+        "label": "What Is Redis Really About? Why Is It So Popular?",
+        "source": "ByteByteGo",
+        "url": "https://www.youtube.com/watch?v=z_NbVtbgBJw",
+        "kind": "video",
+        "minutes": 9
+      }
+    ],
+    "questions": [
+      "Name 4 Redis data structures and a design from this week that used each.",
+      "How did blob storage + CDN appear in both Dropbox and YouTube?",
+      "Compare how Uber and drone telemetry handle high-frequency location updates.",
+      "What makes a job scheduler different from a plain message queue?"
+    ],
+    "exercise": "Design on paper: 'Find My Squad', live location sharing for a 20-person team on a field exercise with spotty LTE. Reuse geo-indexing, WebSocket/SSE push, and edge buffering; draw it and name your consistency choice.",
+    "keyTerms": [
+      "Redis",
+      "Geo index",
+      "Pub/sub",
+      "Blob storage",
+      "Lease"
+    ]
+  },
+  {
+    "day": 43,
+    "week": 7,
+    "phase": "Design Problems",
+    "title": "Design Top-K (Trending Videos)",
+    "summary": "Compute the most-viewed items over sliding time windows at massive scale. Tests stream aggregation and approximate algorithms.",
+    "resources": [
+      {
+        "label": "Design YouTube's Top K Videos Feature",
+        "source": "Hello Interview",
+        "url": "https://www.hellointerview.com/learn/system-design/problem-breakdowns/top-k",
+        "kind": "guide",
+        "minutes": 25
+      },
+      {
+        "label": "Algorithms You Should Know Before System Design Interviews",
+        "source": "ByteByteGo",
+        "url": "https://www.youtube.com/watch?v=xbgzl2maQUU",
+        "kind": "video",
+        "minutes": 7
+      }
+    ],
+    "questions": [
+      "Exact counting vs approximate (count-min sketch): when is approximate OK?",
+      "How do you compute top-k for last hour vs last day vs all time?",
+      "How do you merge partial top-k results from many partitions?",
+      "How fresh do results need to be, and how does that change the design?"
+    ],
+    "exercise": "Design trending top-100 videos for 1M view events/s: requirements, estimate, API, data model, high-level design (stream ingest, windowed counts, heap merge), then deep-dive on sliding windows.",
+    "keyTerms": [
+      "Count-min sketch",
+      "Min-heap",
+      "Sliding window",
+      "Stream processing",
+      "Partial aggregation"
+    ]
+  },
+  {
+    "day": 44,
+    "week": 7,
+    "phase": "Design Problems",
+    "title": "Design an Ad Click Aggregator",
+    "summary": "Count clicks accurately in near real time for billing and dashboards. A classic stream-processing design with exactly-once concerns.",
+    "resources": [
+      {
+        "label": "Design an Ad Click Aggregator",
+        "source": "Hello Interview",
+        "url": "https://www.hellointerview.com/learn/system-design/problem-breakdowns/ad-click-aggregator",
+        "kind": "guide",
+        "minutes": 25
+      },
+      {
+        "label": "Introduction to Apache Kafka",
+        "source": "Apache Kafka",
+        "url": "https://kafka.apache.org/intro",
+        "kind": "article",
+        "minutes": 8
+      }
+    ],
+    "questions": [
+      "How do you count clicks without double counting on retries?",
+      "Lambda vs Kappa architecture: what's the difference?",
+      "How do you handle late-arriving events in windowed aggregation?",
+      "How do you reconcile the real-time count with a batch recount?"
+    ],
+    "exercise": "Design an ad click aggregator for 10k clicks/s: requirements (dashboard per minute, accurate billing), estimate, API, data model, high-level design (click service, Kafka, stream processor, OLAP store), then deep-dive on idempotent counting and reconciliation.",
+    "keyTerms": [
+      "Stream processing",
+      "Tumbling window",
+      "Watermark / late events",
+      "Idempotent consumer",
+      "OLAP"
+    ]
+  },
+  {
+    "day": 45,
+    "week": 7,
+    "phase": "Design Problems",
+    "title": "Design a Sensor Data Pipeline for a Test Stand",
+    "summary": "Defense/aerospace-flavored: capture kHz sensor data during a hot fire, guarantee no data loss, show a live view, and archive for analysis. Builds directly on your DAQ work.",
+    "resources": [
+      {
+        "label": "HTTP Analytics for 6M requests per second using ClickHouse",
+        "source": "Cloudflare Blog",
+        "url": "https://blog.cloudflare.com/http-analytics-for-6m-requests-per-second-using-clickhouse/",
+        "kind": "article",
+        "minutes": 15
+      },
+      {
+        "label": "Parquet Overview",
+        "source": "Apache Parquet",
+        "url": "https://parquet.apache.org/docs/overview/",
+        "kind": "article",
+        "minutes": 5
+      },
+      {
+        "label": "Back pressure",
+        "source": "System Design Primer",
+        "url": "https://github.com/donnemartin/system-design-primer#back-pressure",
+        "kind": "guide",
+        "minutes": 4
+      }
+    ],
+    "questions": [
+      "Why separate the live-view path from the lossless archive path?",
+      "How do you guarantee zero sample loss if the network to the control room drops mid-test?",
+      "Row vs columnar storage for post-test analysis: why columnar (Parquet)?",
+      "How do you time-sync samples from multiple DAQ boxes?"
+    ],
+    "exercise": "Design a pipeline for 64 channels at 10 kHz over a 60 s hot fire, 20 tests/week: requirements (live plot at 30 fps, lossless archive, queryable history), estimate bytes/s and yearly storage, data model, high-level design (DAQ, local ring buffer + disk, gateway, live downsampled stream, object storage + Parquet, query engine), then deep-dive on back pressure and recovery after a dropped link.",
+    "keyTerms": [
+      "Ring buffer",
+      "Back pressure",
+      "Downsampling",
+      "Columnar storage",
+      "Parquet",
+      "Clock sync (PTP)"
+    ]
+  },
+  {
+    "day": 46,
+    "week": 7,
+    "phase": "Design Problems",
+    "title": "Design a Distributed Message Queue (Kafka)",
+    "summary": "Build the queue itself: partitioned append-only logs, replication, consumer offsets. Explains why Kafka behaves the way it does.",
+    "resources": [
+      {
+        "label": "Kafka Deep Dive",
+        "source": "Hello Interview",
+        "url": "https://www.hellointerview.com/learn/system-design/deep-dives/kafka",
+        "kind": "guide",
+        "minutes": 25
+      },
+      {
+        "label": "System Design: Why is Kafka fast?",
+        "source": "ByteByteGo",
+        "url": "https://www.youtube.com/watch?v=UNUz1-msbOM",
+        "kind": "video",
+        "minutes": 5
+      }
+    ],
+    "questions": [
+      "Why is an append-only log on disk fast?",
+      "How do partitions give both scale and per-key ordering?",
+      "How do leader/follower replicas and 'acks=all' protect data?",
+      "How do consumer groups track offsets and rebalance?"
+    ],
+    "exercise": "Design a Kafka-like queue: requirements (durable, ordered per key, 1M msgs/s), estimate disk and network, API (produce/consume/commit), data model (segments, offsets), high-level design (brokers, partitions, replication, controller), then deep-dive on what happens when a partition leader dies.",
+    "keyTerms": [
+      "Append-only log",
+      "Partition",
+      "Offset",
+      "ISR / replication",
+      "Consumer group",
+      "Retention"
+    ]
+  },
+  {
+    "day": 47,
+    "week": 7,
+    "phase": "Design Problems",
+    "title": "Design Pub/Sub for a Robot Swarm with Unreliable Links",
+    "summary": "Robotics-flavored: robots share state and commands over lossy radio mesh. Tests QoS choices, ordering, liveness detection, and graceful degradation.",
+    "resources": [
+      {
+        "label": "Quality of Service settings (ROS 2)",
+        "source": "ROS 2 Documentation",
+        "url": "https://docs.ros.org/en/humble/Concepts/Intermediate/About-Quality-of-Service-Settings.html",
+        "kind": "article",
+        "minutes": 12
+      },
+      {
+        "label": "Distributed Systems 4.2: Broadcast ordering",
+        "source": "Martin Kleppmann",
+        "url": "https://www.youtube.com/watch?v=A8oamrHf_cQ",
+        "kind": "video",
+        "minutes": 16
+      }
+    ],
+    "questions": [
+      "Which topics need reliable delivery and which should be best-effort (e.g., pose vs mission commands)?",
+      "Centralized broker vs brokerless (DDS-style) discovery: what fails when the base station is out of range?",
+      "How do robots detect that a peer has gone silent (deadline/liveliness)?",
+      "How do you order commands so a stale 'go' never overrides a newer 'stop'?"
+    ],
+    "exercise": "Design swarm messaging for 50 robots on a lossy mesh (20% packet loss, partitions): requirements, estimate bandwidth per robot, topic/QoS table, high-level design (broker vs peer-to-peer), then deep-dive on command ordering with sequence numbers and behavior during a partition.",
+    "keyTerms": [
+      "DDS / ROS 2 QoS",
+      "Best effort vs reliable",
+      "Liveliness / deadline",
+      "Sequence numbers",
+      "Partition tolerance",
+      "Last-writer-wins"
+    ]
+  },
+  {
+    "day": 48,
+    "week": 7,
+    "phase": "Design Problems",
+    "title": "Design an Online Judge (LeetCode)",
+    "summary": "Run untrusted code safely at scale and return results quickly. Tests sandboxing, job queues, and contest-time spikes.",
+    "resources": [
+      {
+        "label": "Design a Coding Platform Like LeetCode",
+        "source": "Hello Interview",
+        "url": "https://www.hellointerview.com/learn/system-design/problem-breakdowns/leetcode",
+        "kind": "guide",
+        "minutes": 25
+      },
+      {
+        "label": "System Design: Online Judge for coding contests",
+        "source": "Gaurav Sen",
+        "url": "https://www.youtube.com/watch?v=eg0nlYcbLpo",
+        "kind": "video",
+        "minutes": 8
+      }
+    ],
+    "questions": [
+      "How do you isolate untrusted code (containers, VMs, time/memory limits)?",
+      "Sync vs async submission: how does the client get results?",
+      "How do you handle a 10x spike at contest start?",
+      "How would you build a live contest leaderboard?"
+    ],
+    "exercise": "Design LeetCode: requirements (view problems, submit, get verdict, contests), estimate peak submissions/s, API, data model, high-level design (API, queue, sandboxed workers), then deep-dive on sandbox security and autoscaling workers.",
+    "keyTerms": [
+      "Sandbox",
+      "Container isolation",
+      "Job queue",
+      "Autoscaling",
+      "Leaderboard"
+    ]
+  },
+  {
+    "day": 49,
+    "week": 7,
+    "phase": "Review",
+    "title": "Week 7 Review: Streams & Unreliable Systems",
+    "summary": "Recap top-K, ad click aggregation, the test-stand pipeline, Kafka, robot swarm pub/sub, and the online judge.",
+    "resources": [
+      {
+        "label": "Apache Kafka: a Distributed Messaging System for Log Processing",
+        "source": "Gaurav Sen",
+        "url": "https://www.youtube.com/watch?v=hNDjd9I_VGA",
+        "kind": "video",
+        "minutes": 16
+      },
+      {
+        "label": "Distributed Systems 2.1: The two generals problem",
+        "source": "Martin Kleppmann",
+        "url": "https://www.youtube.com/watch?v=MDuWnzVnfpI",
+        "kind": "video",
+        "minutes": 12
+      },
+      {
+        "label": "Top Kafka Use Cases You Should Know",
+        "source": "ByteByteGo",
+        "url": "https://www.youtube.com/watch?v=Ajz6dBp_EB4",
+        "kind": "video",
+        "minutes": 6
+      }
+    ],
+    "questions": [
+      "Why is exactly-once delivery so hard? How did each design this week cope?",
+      "When is approximate counting acceptable?",
+      "What does the two generals problem say about your robot swarm design?",
+      "How would you reuse the test-stand pipeline for drone flight logs?"
+    ],
+    "exercise": "Design on paper: a live 'top 10 noisiest sensors by anomaly count' panel for a 5,000-sensor test facility. Use a Kafka topic, windowed counts, top-K merge, and explain what happens when a sensor flaps offline and floods late data.",
+    "keyTerms": [
+      "Exactly-once",
+      "Windowing",
+      "Top-K",
+      "Two generals",
+      "Late data"
+    ]
+  },
+  {
+    "day": 50,
+    "week": 8,
+    "phase": "Mock Interviews",
+    "title": "Mock Interview: Design Instagram",
+    "summary": "First full self-mock. Combines blob storage, CDN, and news-feed fan-out under time pressure.",
+    "resources": [
+      {
+        "label": "Designing INSTAGRAM: System Design of News Feed",
+        "source": "Gaurav Sen",
+        "url": "https://www.youtube.com/watch?v=QmX2NPkJTKg",
+        "kind": "video",
+        "minutes": 24
+      },
+      {
+        "label": "Facebook News Feed (re-read the fan-out deep dive)",
+        "source": "Hello Interview",
+        "url": "https://www.hellointerview.com/learn/system-design/problem-breakdowns/fb-news-feed",
+        "kind": "guide",
+        "minutes": 10
+      }
+    ],
+    "questions": [
+      "Rubric (1-5): Did I clarify functional + non-functional requirements and scope before drawing?",
+      "Rubric (1-5): Were my estimates reasonable, and did they actually change a design decision?",
+      "Rubric (1-5): Did my high-level design cover every functional requirement with a clear data flow?",
+      "Rubric (1-5): Did I deep-dive on hybrid fan-out AND presigned uploads + CDN, explaining trade-offs out loud?"
+    ],
+    "exercise": "45-minute timed self-mock: Design Instagram (post photos, follow users, view a home feed). Set a timer and talk out loud (record yourself if possible): 5 min requirements, 5 min estimation, 5 min API + entities, 15 min high-level design, 15 min deep dives (feed generation for celebrities and photo upload/storage). Then grade yourself with the rubric questions and read the resources to find gaps.",
+    "keyTerms": [
+      "Fan-out",
+      "Presigned URL",
+      "CDN",
+      "Feed cache"
+    ]
+  },
+  {
+    "day": 51,
+    "week": 8,
+    "phase": "Mock Interviews",
+    "title": "Mock Interview: Design Yelp / Proximity Service",
+    "summary": "Self-mock focused on geospatial search and read-heavy design.",
+    "resources": [
+      {
+        "label": "Proximity Search",
+        "source": "Hello Interview",
+        "url": "https://www.hellointerview.com/learn/system-design/deep-dives/proximity-search",
+        "kind": "guide",
+        "minutes": 20
+      },
+      {
+        "label": "Geohash",
+        "source": "Wikipedia",
+        "url": "https://en.wikipedia.org/wiki/Geohash",
+        "kind": "article",
+        "minutes": 6
+      }
+    ],
+    "questions": [
+      "Rubric (1-5): Did I clarify functional + non-functional requirements and scope before drawing?",
+      "Rubric (1-5): Were my estimates reasonable, and did they actually change a design decision?",
+      "Rubric (1-5): Did my high-level design cover every functional requirement with a clear data flow?",
+      "Rubric (1-5): Did I justify a geospatial index (geohash/quadtree/PostGIS) and handle rating updates without contention?"
+    ],
+    "exercise": "45-minute timed self-mock: Design Yelp (search nearby businesses, view details, post reviews). Set a timer and talk out loud (record yourself if possible): 5 min requirements, 5 min estimation, 5 min API + entities, 15 min high-level design, 15 min deep dives (the geospatial index and keeping average ratings up to date). Then grade yourself with the rubric questions and read the resources to find gaps.",
+    "keyTerms": [
+      "Geohash",
+      "Quadtree",
+      "Read-heavy",
+      "Denormalized rating"
+    ]
+  },
+  {
+    "day": 52,
+    "week": 8,
+    "phase": "Mock Interviews",
+    "title": "Mock Interview: Design a Real-Time Leaderboard",
+    "summary": "Self-mock on a compact problem with a sharp data-structure deep dive.",
+    "resources": [
+      {
+        "label": "Real-time Gaming Leaderboard (book chapter)",
+        "source": "ByteByteGo",
+        "url": "https://bytebytego.com/courses/system-design-interview/real-time-gaming-leaderboard",
+        "kind": "guide",
+        "minutes": 20
+      },
+      {
+        "label": "Redis sorted sets",
+        "source": "Redis Docs",
+        "url": "https://redis.io/docs/latest/develop/data-types/sorted-sets/",
+        "kind": "article",
+        "minutes": 8
+      }
+    ],
+    "questions": [
+      "Rubric (1-5): Did I clarify functional + non-functional requirements and scope before drawing?",
+      "Rubric (1-5): Were my estimates reasonable, and did they actually change a design decision?",
+      "Rubric (1-5): Did my high-level design cover every functional requirement with a clear data flow?",
+      "Rubric (1-5): Did I explain sorted-set operations with complexity, and how to scale past one Redis node?"
+    ],
+    "exercise": "45-minute timed self-mock: Design a real-time game leaderboard (top 100 + 'my rank' for 10M players). Set a timer and talk out loud (record yourself if possible): 5 min requirements, 5 min estimation, 5 min API + entities, 15 min high-level design, 15 min deep dives (Redis sorted sets, sharding the leaderboard, and computing a player's rank). Then grade yourself with the rubric questions and read the resources to find gaps.",
+    "keyTerms": [
+      "Sorted set (ZSET)",
+      "Rank query",
+      "Sharding",
+      "Write-heavy"
+    ]
+  },
+  {
+    "day": 53,
+    "week": 8,
+    "phase": "Mock Interviews",
+    "title": "Mock Interview: Design Google Docs",
+    "summary": "Self-mock on real-time collaboration, one of the hardest consistency problems in interviews.",
+    "resources": [
+      {
+        "label": "Real-Time Collaboration Explained",
+        "source": "Hello Interview",
+        "url": "https://www.youtube.com/watch?v=EX5uZV3Tzss",
+        "kind": "video",
+        "minutes": 16
+      },
+      {
+        "label": "How Figma's multiplayer technology works",
+        "source": "Figma Blog",
+        "url": "https://www.figma.com/blog/how-figmas-multiplayer-technology-works/",
+        "kind": "article",
+        "minutes": 15
+      }
+    ],
+    "questions": [
+      "Rubric (1-5): Did I clarify functional + non-functional requirements and scope before drawing?",
+      "Rubric (1-5): Were my estimates reasonable, and did they actually change a design decision?",
+      "Rubric (1-5): Did my high-level design cover every functional requirement with a clear data flow?",
+      "Rubric (1-5): Could I explain OT vs CRDT simply and choose one, plus how edits are persisted and replayed?"
+    ],
+    "exercise": "45-minute timed self-mock: Design Google Docs (real-time collaborative editing for up to 100 concurrent editors). Set a timer and talk out loud (record yourself if possible): 5 min requirements, 5 min estimation, 5 min API + entities, 15 min high-level design, 15 min deep dives (conflict resolution (OT vs CRDT) and routing all editors of a doc to the same server). Then grade yourself with the rubric questions and read the resources to find gaps.",
+    "keyTerms": [
+      "Operational transform",
+      "CRDT",
+      "WebSocket",
+      "Document server",
+      "Snapshot + op log"
+    ]
+  },
+  {
+    "day": 54,
+    "week": 8,
+    "phase": "Mock Interviews",
+    "title": "Mock Interview: Design a Payment System",
+    "summary": "Self-mock where correctness beats scale: no double charges, no lost money.",
+    "resources": [
+      {
+        "label": "Making retries safe with idempotent APIs",
+        "source": "Amazon Builders' Library",
+        "url": "https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/",
+        "kind": "article",
+        "minutes": 10
+      },
+      {
+        "label": "Books, an immutable double-entry accounting database service",
+        "source": "Square Engineering",
+        "url": "https://developer.squareup.com/blog/books-an-immutable-double-entry-accounting-database-service/",
+        "kind": "article",
+        "minutes": 12
+      },
+      {
+        "label": "Accounting for Developers, Part I",
+        "source": "Modern Treasury",
+        "url": "https://www.moderntreasury.com/journal/accounting-for-developers-part-i",
+        "kind": "article",
+        "minutes": 12
+      }
+    ],
+    "questions": [
+      "Rubric (1-5): Did I clarify functional + non-functional requirements and scope before drawing?",
+      "Rubric (1-5): Were my estimates reasonable, and did they actually change a design decision?",
+      "Rubric (1-5): Did my high-level design cover every functional requirement with a clear data flow?",
+      "Rubric (1-5): Did I guarantee no double charges (idempotency keys) and keep balances correct with an append-only ledger?"
+    ],
+    "exercise": "45-minute timed self-mock: Design a payment system like Stripe (charge a card, refunds, merchant balances). Set a timer and talk out loud (record yourself if possible): 5 min requirements, 5 min estimation, 5 min API + entities, 15 min high-level design, 15 min deep dives (idempotency for retries, the double-entry ledger, and reconciliation with the card network). Then grade yourself with the rubric questions and read the resources to find gaps.",
+    "keyTerms": [
+      "Idempotency key",
+      "Double-entry ledger",
+      "Reconciliation",
+      "Saga",
+      "Strong consistency"
+    ]
+  },
+  {
+    "day": 55,
+    "week": 8,
+    "phase": "Mock Interviews",
+    "title": "Mock Interview: Design a Metrics & Logging System",
+    "summary": "Self-mock on a write-heavy ingestion system, close to the telemetry systems defense companies build.",
+    "resources": [
+      {
+        "label": "Prometheus Overview",
+        "source": "Prometheus",
+        "url": "https://prometheus.io/docs/introduction/overview/",
+        "kind": "article",
+        "minutes": 8
+      },
+      {
+        "label": "Time Series Databases (re-read storage + downsampling)",
+        "source": "Hello Interview",
+        "url": "https://www.hellointerview.com/learn/system-design/deep-dives/time-series-databases",
+        "kind": "guide",
+        "minutes": 15
+      }
+    ],
+    "questions": [
+      "Rubric (1-5): Did I clarify functional + non-functional requirements and scope before drawing?",
+      "Rubric (1-5): Were my estimates reasonable, and did they actually change a design decision?",
+      "Rubric (1-5): Did my high-level design cover every functional requirement with a clear data flow?",
+      "Rubric (1-5): Did I handle ingest at scale (batching, Kafka), retention/downsampling, and alerting without hammering storage?"
+    ],
+    "exercise": "45-minute timed self-mock: Design a metrics monitoring and alerting system like Datadog (ingest, query dashboards, alert). Set a timer and talk out loud (record yourself if possible): 5 min requirements, 5 min estimation, 5 min API + entities, 15 min high-level design, 15 min deep dives (write-heavy time-series storage, downsampling/retention, and the alert evaluation pipeline). Then grade yourself with the rubric questions and read the resources to find gaps.",
+    "keyTerms": [
+      "Time-series DB",
+      "Push vs pull",
+      "Downsampling",
+      "Retention",
+      "Alert rules"
+    ]
+  },
+  {
+    "day": 56,
+    "week": 8,
+    "phase": "Review",
+    "title": "Final Review: Patterns, Gaps & Game Plan",
+    "summary": "Consolidate eight weeks: revisit the framework, your weakest mock, and the patterns that repeat across every problem.",
+    "resources": [
+      {
+        "label": "System Design in a Hurry: Introduction",
+        "source": "Hello Interview",
+        "url": "https://www.hellointerview.com/learn/system-design/in-a-hurry/introduction",
+        "kind": "guide",
+        "minutes": 10
+      },
+      {
+        "label": "20 System Design Concepts Explained in 10 Minutes",
+        "source": "NeetCode",
+        "url": "https://www.youtube.com/watch?v=i53Gi_K3o7I",
+        "kind": "video",
+        "minutes": 12
+      },
+      {
+        "label": "System Design Was HARD - Until You Knew the Trade-Offs",
+        "source": "ByteByteGo",
+        "url": "https://www.youtube.com/watch?v=1nENigGr-a0",
+        "kind": "video",
+        "minutes": 5
+      }
+    ],
+    "questions": [
+      "Which mock scored lowest, and which rubric line was weakest?",
+      "Explain 5 trade-offs you now make by default (e.g., SQL vs NoSQL, push vs pull).",
+      "What are your go-to deep dives for read-heavy, write-heavy, and real-time systems?",
+      "How would you tie a design answer to your DAQ or autonomy-sim experience?"
+    ],
+    "exercise": "Redo your weakest mock from week 8 in 30 minutes and compare against your first attempt. Then write a 1-page cheat sheet: framework timings, 10 key numbers, and your default component choices.",
+    "keyTerms": [
+      "Framework",
+      "Trade-offs",
+      "Read-heavy vs write-heavy",
+      "Real-time patterns",
+      "Cheat sheet"
+    ]
+  }
+]
