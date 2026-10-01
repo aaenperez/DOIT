@@ -24,7 +24,11 @@ export function useStore() {
   const timer = useRef();
 
   useEffect(() => {
-    load().then((s) => setState(s ? { ...initialState(), ...s } : initialState()));
+    load().then((s) => {
+      if (!s) return setState(initialState());
+      // Saves from before the setup screen existed were made on the "continue" track.
+      setState({ ...initialState(), track: 'continue', setupDone: true, ...s });
+    });
   }, []);
 
   useEffect(() => {

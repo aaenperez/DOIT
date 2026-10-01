@@ -7,8 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "start": "vite build && env -u ELECTRON_RUN_AS_NODE electron .",
-    "package": "vite build && electron-packager . DOIT --platform=darwin --arch=arm64 --out=release --overwrite --icon=build/icon.icns --ignore='^/(src|release|build|electron-dist|index.html|vite.config.js|node_modules)($|/)' && npx @electron/fuses write --app release/DOIT-darwin-arm64/DOIT.app RunAsNode=off && codesign --force --deep -s - release/DOIT-darwin-arm64/DOIT.app",
-    "install-app": "npm run package && rm -rf /Applications/DOIT.app && cp -R release/DOIT-darwin-arm64/DOIT.app /Applications/"
+    "package": "node scripts/package.mjs",
+    "install-app": "node scripts/package.mjs --install"
   },
   "license": "ISC",
   "type": "module",
@@ -23,5 +23,8 @@
     "electron": "^44.5.1",
     "vite": "^8.3.1"
   },
-  "productName": "DOIT"
+  "productName": "DOIT",
+  "engines": {
+    "node": ">=20.19"
+  }
 }

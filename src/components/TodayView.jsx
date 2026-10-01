@@ -4,7 +4,6 @@ import {
   TARGET_MIN, todayKey, TOPICS, TOTAL_DAYS,
 } from '../lib/model.js';
 import { IArticle, IBook, ICheck, IChevL, IChevR, ICode, IExt, ILayers, IPlay, IStop, IVideo } from './icons.jsx';
-import { DAY_NOTES } from '../data/lc-plan.js';
 
 const STATUS = [
   ['solved', 'Solved'],
@@ -184,7 +183,7 @@ function LeetCodeBlock({ state, actions, day, lc, status }) {
             <b>Mock set.</b> Give yourself 45 minutes for both problems. Talk through your approach out loud as if an interviewer were there, and use no hints until the timer ends.
           </div>
         )}
-        {DAY_NOTES[day] && <div className="callout note">{DAY_NOTES[day]}</div>}
+        {lc.note && <div className="callout note">{lc.note}</div>}
 
         {status.items.map((item, i) => {
           const p = PROBLEMS[item.slug];

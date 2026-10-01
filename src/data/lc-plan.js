@@ -205,85 +205,99 @@ export const PROBLEMS = Object.fromEntries(
 );
 
 const N = (topic, ...problems) => ({ kind: 'new', topic, problems });
-const R = () => ({ kind: 'review', topic: null, problems: [] });
 const M = (...problems) => ({ kind: 'mock', topic: null, problems });
+const REVIEW = { kind: 'review', topic: null, problems: [] };
+const HARD = 'A Hard problem. Expect it to take the full block.';
+const note = (g, n) => ({ ...g, note: n });
 
-// Index i = plan day i + 1. Length 56.
-export const LC_DAYS = [
-  N('arrays', 'encode-and-decode-strings', 'product-of-array-except-self'),
+// The 48 study days of the "continue" track, in order. Review days get inserted every 7th day.
+const CORE = [
+  note(N('arrays', 'encode-and-decode-strings', 'product-of-array-except-self'),
+    'Finishes Arrays & Hashing. If you have seen Product of Array Except Self before, solve it cold this time: a prefix pass, then a suffix pass.'),
   N('twoptr', 'valid-palindrome', 'two-sum-ii-input-array-is-sorted'),
   N('twoptr', '3sum', 'container-with-most-water'),
-  N('twoptr', 'trapping-rain-water'),
+  note(N('twoptr', 'trapping-rain-water'), HARD),
   N('window', 'best-time-to-buy-and-sell-stock', 'longest-substring-without-repeating-characters'),
   N('window', 'longest-repeating-character-replacement', 'permutation-in-string'),
-  R(), // 7
-  N('window', 'minimum-window-substring'),
+  note(N('window', 'minimum-window-substring'), HARD),
   N('stack', 'valid-parentheses', 'min-stack'),
   N('stack', 'evaluate-reverse-polish-notation', 'generate-parentheses'),
   N('stack', 'daily-temperatures', 'car-fleet'),
   N('bsearch', 'binary-search', 'search-a-2d-matrix'),
   N('bsearch', 'koko-eating-bananas', 'find-minimum-in-rotated-sorted-array'),
-  R(), // 14
   N('bsearch', 'search-in-rotated-sorted-array', 'time-based-key-value-store'),
   N('linked', 'reverse-linked-list', 'merge-two-sorted-lists'),
   N('linked', 'linked-list-cycle', 'reorder-list'),
   N('linked', 'remove-nth-node-from-end-of-list', 'copy-list-with-random-pointer'),
   N('linked', 'add-two-numbers', 'lru-cache'),
   N('trees', 'invert-binary-tree', 'maximum-depth-of-binary-tree'),
-  R(), // 21
   N('trees', 'diameter-of-binary-tree', 'balanced-binary-tree'),
   N('trees', 'same-tree', 'subtree-of-another-tree'),
   N('trees', 'lowest-common-ancestor-of-a-binary-search-tree', 'binary-tree-level-order-traversal'),
   N('trees', 'validate-binary-search-tree', 'kth-smallest-element-in-a-bst'),
   N('heap', 'kth-largest-element-in-a-stream', 'last-stone-weight'),
   N('heap', 'k-closest-points-to-origin', 'task-scheduler'),
-  R(), // 28
   N('backtrack', 'subsets', 'combination-sum'),
   N('backtrack', 'permutations', 'word-search'),
   N('graphs', 'number-of-islands', 'clone-graph'),
   N('graphs', 'pacific-atlantic-water-flow', 'course-schedule'),
   N('dp', 'climbing-stairs', 'house-robber'),
   N('dp', 'coin-change', 'longest-increasing-subsequence'),
-  R(), // 35
   N('dp', 'word-break', 'longest-common-subsequence'),
   N('greedy', 'merge-intervals', 'insert-interval'),
   N('greedy', 'non-overlapping-intervals', 'jump-game'),
-  N('graphs', 'rotting-oranges', 'max-area-of-island'),
+  note(N('graphs', 'rotting-oranges', 'max-area-of-island'),
+    'Core roadmap complete 🎉 Phase 2 adds the highest-value NeetCode 150 problems you have not done yet.'),
   N('tries', 'implement-trie-prefix-tree', 'design-add-and-search-words-data-structure'),
   N('graphs', 'course-schedule-ii', 'number-of-connected-components-in-an-undirected-graph'),
-  R(), // 42
   N('dp', 'house-robber-ii', 'decode-ways'),
   N('dp', 'unique-paths', 'longest-palindromic-substring'),
   N('greedy', 'maximum-subarray', 'jump-game-ii'),
   N('trees', 'binary-tree-right-side-view', 'construct-binary-tree-from-preorder-and-inorder-traversal'),
   N('backtrack', 'subsets-ii', 'combination-sum-ii'),
   N('heap', 'find-median-from-data-stream', 'meeting-rooms-ii'),
-  R(), // 49
-  M('palindromic-substrings', 'gas-station'),
+  note(M('palindromic-substrings', 'gas-station'),
+    'Mock week: set a 45-minute timer for BOTH problems, talk out loud, and no hints until the timer ends.'),
   M('partition-labels', 'surrounded-regions'),
   M('coin-change-ii', 'network-delay-time'),
   M('count-good-nodes-in-binary-tree', 'letter-combinations-of-a-phone-number'),
   M('maximum-product-subarray', 'partition-equal-subset-sum'),
   M('redundant-connection', 'min-cost-to-connect-all-points'),
-  R(), // 56
 ];
 
-// Day 1 revisits Product of Array Except Self (only studied in July).
-export const DAY_NOTES = {
-  1: 'Finishes Arrays & Hashing. Product of Array Except Self is a revisit: you only studied it in July, so solve it cold this time, including the suffix pass.',
-  4: 'A Hard problem. Expect it to take the full block.',
-  8: 'A Hard problem. Expect it to take the full block.',
-  39: 'Roadmap complete 🎉 Phase 2 adds the highest-value NeetCode 150 problems you have not done yet.',
-  50: 'Mock week: set a 45-minute timer for BOTH problems, talk out loud, and no hints until the timer ends.',
+// "beginning" track: the first 6 Arrays & Hashing problems up front, then the same plan
+// with three Phase 2 days dropped so it still fits in 56 days.
+const FRESH = [
+  note(N('arrays', 'contains-duplicate', 'valid-anagram'), 'Day one. Easy problems on purpose: get the hash set/map habit down.'),
+  N('arrays', 'two-sum', 'group-anagrams'),
+  N('arrays', 'top-k-frequent-elements', 'product-of-array-except-self'),
+  note(N('arrays', 'longest-consecutive-sequence', 'encode-and-decode-strings'), 'Finishes Arrays & Hashing.'),
+  ...CORE.slice(1).filter(
+    (g) => !['binary-tree-right-side-view', 'subsets-ii', 'find-median-from-data-stream'].includes(g.problems[0]),
+  ),
+];
+
+export const TRACKS = {
+  beginning: {
+    name: 'Start from the beginning',
+    detail: 'Day 1 is Contains Duplicate. Covers all of Arrays & Hashing first.',
+  },
+  continue: {
+    name: 'Skip the Arrays & Hashing basics',
+    detail: 'For people who already did the first 6 Arrays & Hashing problems. Day 1 starts at Encode and Decode Strings.',
+  },
 };
 
-// Status: solved = solved unaided, hinted = solved with hints, studied = studied the solution, skipped.
-export const SEED_ATTEMPTS = {
-  'seed:contains-duplicate': { slug: 'contains-duplicate', planDay: 0, date: '2026-07-19', status: 'solved', notes: 'Optimal hash-set, early return.' },
-  'seed:valid-anagram': { slug: 'valid-anagram', planDay: 0, date: '2026-07-19', status: 'solved', notes: 'Solved via sorting. Learn the O(n) array<26> version.' },
-  'seed:two-sum': { slug: 'two-sum', planDay: 0, date: '2026-07-20', status: 'solved', notes: '' },
-  'seed:group-anagrams': { slug: 'group-anagrams', planDay: 0, date: '2026-07-20', status: 'solved', notes: 'First Medium! Sorted-key approach.' },
-  'seed:top-k-frequent-elements': { slug: 'top-k-frequent-elements', planDay: 0, date: '2026-07-21', status: 'hinted', notes: 'Max-heap approach. Review the O(n) bucket-sort variant.' },
-  'seed:product-of-array-except-self': { slug: 'product-of-array-except-self', planDay: 0, date: '2026-07-26', status: 'studied', notes: 'Guided through prefix/suffix; confirm suffix pass.' },
-  'seed:longest-consecutive-sequence': { slug: 'longest-consecutive-sequence', planDay: 0, date: '2026-07-26', status: 'hinted', notes: 'Hash-set streak walk; per-streak counter bug.' },
-};
+function withReviews(groups) {
+  const days = [];
+  for (const g of groups) {
+    if (days.length % 7 === 6) days.push(REVIEW);
+    days.push(g);
+  }
+  days.push(REVIEW);
+  if (days.length !== 56) throw new Error(`plan has ${days.length} days, expected 56`);
+  return days;
+}
+
+// Index i = plan day i + 1. Length 56.
+export const LC_TRACKS = { continue: withReviews(CORE), beginning: withReviews(FRESH) };

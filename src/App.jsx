@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useStore } from './lib/store.js';
-import { attemptKey, currentDay, streaks, todayKey, TOTAL_DAYS } from './lib/model.js';
+import { attemptKey, currentDay, setTrack, streaks, todayKey, TOTAL_DAYS } from './lib/model.js';
+import Setup from './components/Setup.jsx';
 import Sidebar from './components/Sidebar.jsx';
 import TodayView from './components/TodayView.jsx';
 import CalendarView from './components/CalendarView.jsx';
@@ -73,10 +74,13 @@ export default function App() {
         up((s) => ({ time: [...s.time, { id: crypto.randomUUID(), date: todayKey(), cat, minutes, planDay: d }] })),
       removeTime: (id) => up((s) => ({ time: s.time.filter((t) => t.id !== id) })),
       setTheme: (theme) => up(() => ({ theme })),
+      finishSetup: (startDate, track) => up(() => ({ startDate, track, setupDone: true })),
     };
   }, [setState]);
 
   if (!state) return null;
+  if (!state.setupDone) return <Setup onDone={actions.finishSetup} />;
+  setTrack(state.track);
 
   const cur = currentDay(state);
   const shownDay = Math.min(day ?? cur, TOTAL_DAYS);

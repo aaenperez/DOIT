@@ -1,9 +1,8 @@
-import { LC_DAYS, PROBLEMS, SEED_ATTEMPTS, TOPICS } from '../data/lc-plan.js';
+import { LC_TRACKS, PROBLEMS, TOPICS, TRACKS } from '../data/lc-plan.js';
 import SD from '../data/sd-curriculum.json';
 
 export const TOTAL_DAYS = 56;
 export const TARGET_MIN = 100; // ~50 LC + ~50 SD
-export const START = '2026-10-01';
 export const WEAK = new Set(['hinted', 'studied', 'skipped']);
 
 // ---------- dates (local, YYYY-MM-DD) ----------
@@ -24,11 +23,14 @@ export const fmtDate = (k, opts = { weekday: 'long', month: 'long', day: 'numeri
   fromKey(k).toLocaleDateString('en-US', opts);
 
 // ---------- state ----------
+// A brand-new install starts with setupDone=false and shows the setup screen.
 export function initialState() {
   return {
     version: 1,
-    startDate: START,
-    attempts: { ...SEED_ATTEMPTS }, // key `${planDay}:${slug}` -> {slug, planDay, date, status, notes}
+    setupDone: false,
+    track: 'beginning', // key of TRACKS
+    startDate: todayKey(),
+    attempts: {}, // key `${planDay}:${slug}` -> {slug, planDay, date, status, notes}
     sd: {}, // planDay -> {status: 'done'|'skipped', date, notes, confidence}
     checks: {}, // `sd:${day}:${i}` -> true
     time: [], // {id, date, cat: 'lc'|'sd', minutes, planDay}
@@ -38,7 +40,12 @@ export function initialState() {
 }
 
 export const sdDay = (d) => SD[d - 1];
-export const lcDay = (d) => LC_DAYS[d - 1];
+// The LeetCode schedule depends on the chosen track; App sets it from state on every render.
+let activeTrack = 'beginning';
+export const setTrack = (t) => {
+  activeTrack = LC_TRACKS[t] ? t : 'beginning';
+};
+export const lcDay = (d) => LC_TRACKS[activeTrack][d - 1];
 export const attemptKey = (d, slug) => `${d}:${slug}`;
 
 // Latest attempt per slug among attempts matching `filter`.
@@ -207,4 +214,4 @@ export const fmtMin = (m) => {
   return h ? (r ? `${h}h ${r}m` : `${h}h`) : `${r}m`;
 };
 
-export { PROBLEMS, TOPICS, LC_DAYS, SD };
+export { PROBLEMS, TOPICS, TRACKS, SD };

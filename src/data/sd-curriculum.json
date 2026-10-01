@@ -34,7 +34,7 @@
       "Why is HTTP called stateless, and how do apps keep sessions anyway?",
       "What does TLS add on top of TCP, and what does it cost in latency?"
     ],
-    "exercise": "Sketch the full request path for loading your own Next.js/Supabase app: browser cache, DNS lookup, TCP + TLS handshake, HTTP request, server, database, response. Mark which steps are cached and roughly how many ms each takes.",
+    "exercise": "Sketch the full request path for loading a web app you use every day: browser cache, DNS lookup, TCP + TLS handshake, HTTP request, server, database, response. Mark which steps are cached and roughly how many ms each takes.",
     "keyTerms": [
       "DNS resolver",
       "TTL",
@@ -79,7 +79,7 @@
       "What does 99.9% vs 99.99% availability mean in downtime per year?",
       "Roughly how long is a memory read vs SSD read vs cross-continent round trip?"
     ],
-    "exercise": "Your test-stand DAQ samples 8 channels at 10 kHz and streams to a laptop. Write down its latency budget and required throughput (bytes/s), then list two changes that improve throughput but worsen latency (e.g., batching).",
+    "exercise": "A rocket test-stand data acquisition (DAQ) system samples 8 channels at 10 kHz and streams to a laptop. Write down its latency budget and required throughput (bytes/s), then list two changes that improve throughput but worsen latency (e.g., batching).",
     "keyTerms": [
       "Latency",
       "Throughput",
@@ -288,7 +288,7 @@
       "What is the consistency cost of adding a cache?",
       "SQL or NoSQL for a user-accounts table? Defend it in 30 seconds."
     ],
-    "exercise": "Design on paper: a Purdue club event-signup site that gets a 50x spike when registration opens. Draw DNS, CDN, LB, stateless app servers, cache, and DB. Label what's cached, the eviction policy, and what happens when one app server dies mid-spike.",
+    "exercise": "Design on paper: a college club event-signup site that gets a 50x spike when registration opens. Draw DNS, CDN, LB, stateless app servers, cache, and DB. Label what's cached, the eviction policy, and what happens when one app server dies mid-spike.",
     "keyTerms": [
       "Request path",
       "Horizontal scaling",
@@ -600,7 +600,7 @@
       "What consistency does a user get reading from an async replica?",
       "Estimate: does 2 TB of data fit on one database node? Should it?"
     ],
-    "exercise": "Design on paper: your rocket team's test-run database (Postgres) has grown to 2 TB with 5k reads/s and 200 writes/s. Estimate 1-year growth, then propose indexes, read replicas, and a shard key. Explain where consistent hashing would (or wouldn't) help.",
+    "exercise": "Design on paper: a rocket team's test-run database (Postgres) has grown to 2 TB with 5k reads/s and 200 writes/s. Estimate 1-year growth, then propose indexes, read replicas, and a shard key. Explain where consistent hashing would (or wouldn't) help.",
     "keyTerms": [
       "Index",
       "Read replica",
@@ -1798,7 +1798,7 @@
     "week": 7,
     "phase": "Design Problems",
     "title": "Design a Sensor Data Pipeline for a Test Stand",
-    "summary": "Defense/aerospace-flavored: capture kHz sensor data during a hot fire, guarantee no data loss, show a live view, and archive for analysis. Builds directly on your DAQ work.",
+    "summary": "Defense/aerospace-flavored: capture kHz sensor data during a hot fire, guarantee no data loss, show a live view, and archive for analysis.",
     "resources": [
       {
         "label": "HTTP Analytics for 6M requests per second using ClickHouse",
@@ -2254,7 +2254,7 @@
       "Which mock scored lowest, and which rubric line was weakest?",
       "Explain 5 trade-offs you now make by default (e.g., SQL vs NoSQL, push vs pull).",
       "What are your go-to deep dives for read-heavy, write-heavy, and real-time systems?",
-      "How would you tie a design answer to your DAQ or autonomy-sim experience?"
+      "How would you tie a design answer to a project you've built?"
     ],
     "exercise": "Redo your weakest mock from week 8 in 30 minutes and compare against your first attempt. Then write a 1-page cheat sheet: framework timings, 10 key numbers, and your default component choices.",
     "keyTerms": [
